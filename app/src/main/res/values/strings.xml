@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Carnet</string>
+
+    <string name="menu_main_item_car">CAR</string>
+    <string name="menu_main_item_map">MAP</string>
+    <string name="menu_main_item_session">SESSION</string>
+    <string name="menu_main_item_settings">SETTINGS</string>
 </resources>
