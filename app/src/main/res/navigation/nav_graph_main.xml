@@ -9,21 +9,13 @@
         android:id="@+id/carFragment"
         android:name="com.harper.carnet.ui.car.CarFragment"
         android:label="CarFragment"
-        tools:layout="@layout/fragment_car">
-        <action
-            android:id="@+id/action_carFragment_to_mapFragment"
-            app:destination="@id/mapFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_car" />
 
     <fragment
-        android:id="@+id/sessionFragment"
+        android:id="@+id/sessionsFragment"
         android:name="com.harper.carnet.ui.session.SessionFragment"
         android:label="SessionFragment"
-        tools:layout="@layout/fragment_session">
-        <action
-            android:id="@+id/action_sessionFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_session" />
 
     <fragment
         android:id="@+id/settingsFragment"
@@ -33,11 +25,8 @@
 
     <fragment
         android:id="@+id/mapFragment"
-        android:name="com.harper.carnet.ui.MapFragment"
+        android:name="com.harper.carnet.ui.map.MapFragment"
         android:label="MapFragment"
-        tools:layout="@layout/fragment_map">
-        <action
-            android:id="@+id/action_mapFragment_to_sessionFragment"
-            app:destination="@id/sessionFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_map" />
+
 </navigation>

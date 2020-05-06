@@ -25,4 +25,6 @@
     <string name="tab_history">History</string>
     <string name="tab_notifications">Notifications</string>
 
+    <string name="skip">Skip</string>
+
 </resources>

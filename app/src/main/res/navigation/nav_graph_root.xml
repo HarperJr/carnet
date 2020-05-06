@@ -9,12 +9,7 @@
         android:id="@+id/introFragment"
         android:name="com.harper.carnet.ui.intro.IntroFragment"
         android:label="IntroFragment"
-        tools:layout="@layout/fragment_intro">
-        <action
-            android:id="@+id/action_introFragment_to_mainFragment"
-            app:destination="@id/mainFragment"
-            app:popUpTo="@null" />
-    </fragment>
+        tools:layout="@layout/fragment_intro"/>
 
     <fragment
         android:id="@+id/mainFragment"

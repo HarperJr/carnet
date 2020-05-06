@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.harper.carnet.R
 import com.harper.carnet.data.storage.AppStorage
 import com.harper.carnet.ui.intro.adapter.IntroAdapter
@@ -18,17 +19,44 @@ class IntroFragment : Fragment(R.layout.fragment_intro) {
         findNavController()
     }
 
+    private var pagePosition: Int = 0
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        btnSkip.setOnClickListener { completeIntro() }
         with(viewPager) {
             adapter = IntroAdapter(requireContext(), ITEMS)
             currentItem = savedInstanceState?.getInt(STATE_PAGE_POS) ?: 0
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewPager.registerOnPageChangeCallback(onPageChangedCallback)
+    }
+
+    override fun onStop() {
+        viewPager.unregisterOnPageChangeCallback(onPageChangedCallback)
+        super.onStop()
+    }
+
+    private fun completeIntro() {
+        appStorage.setShouldShowIntro(false)
+        navController.navigate(R.id.mainFragment)
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState.apply {
-            putInt(STATE_PAGE_POS, viewPager.currentItem)
+            putInt(STATE_PAGE_POS, pagePosition)
         })
+    }
+
+    private val onPageChangedCallback = object : ViewPager2.OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            pagePosition = position
+            if (pagePosition >= viewPager.childCount - 1) {
+                completeIntro()
+            }
+        }
     }
 
     companion object {

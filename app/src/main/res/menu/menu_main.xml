@@ -3,25 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/carFragment"
+        android:id="@id/carFragment"
         android:icon="@drawable/ic_vehicle"
         android:title="@string/menu_main_item_car"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/mapFragment"
+        android:id="@id/mapFragment"
         android:icon="@drawable/ic_map"
         android:title="@string/menu_main_item_map"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/sessionFragment"
+        android:id="@id/sessionsFragment"
         android:icon="@drawable/ic_sessions"
         android:title="@string/menu_main_item_session"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/settingsFragment"
+        android:id="@id/settingsFragment"
         android:icon="@drawable/ic_settings"
         android:title="@string/menu_main_item_settings"
         app:showAsAction="ifRoom" />

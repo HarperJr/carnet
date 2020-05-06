@@ -6,12 +6,15 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 28
     defaultConfig {
+
         applicationId "com.harper.carnet"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField('String', 'MAPBOX_TOKEN', '"pk.eyJ1IjoiaGFycGVyanIiLCJhIjoiY2pzaG1kNjV1MDkzNzQzbGk0NDMwendrMSJ9.fPUWoaQetd1JgyFHaIXTGw"')
     }
 
     buildTypes {

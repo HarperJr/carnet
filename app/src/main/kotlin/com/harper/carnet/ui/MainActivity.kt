@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
 
         if (!appStorage.getShouldShowIntro()) {
-            navController.navigate(R.id.action_introFragment_to_mainFragment)
+            navController.navigate(R.id.introFragment)
         }
     }
 }
