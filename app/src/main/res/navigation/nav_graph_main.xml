@@ -1,5 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph_main">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/carFragment">
 
+    <fragment
+        android:id="@+id/carFragment"
+        android:name="com.harper.carnet.ui.car.CarFragment"
+        android:label="CarFragment"
+        tools:layout="@layout/fragment_car">
+        <action
+            android:id="@+id/action_carFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/sessionFragment"
+        android:name="com.harper.carnet.ui.session.SessionFragment"
+        android:label="SessionFragment"
+        tools:layout="@layout/fragment_session">
+        <action
+            android:id="@+id/action_sessionFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.harper.carnet.ui.settings.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.harper.carnet.ui.MapFragment"
+        android:label="MapFragment"
+        tools:layout="@layout/fragment_map">
+        <action
+            android:id="@+id/action_mapFragment_to_sessionFragment"
+            app:destination="@id/sessionFragment" />
+    </fragment>
 </navigation>

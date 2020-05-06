@@ -3,12 +3,20 @@ package com.harper.carnet.ui.intro
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.harper.carnet.R
+import com.harper.carnet.data.storage.AppStorage
 import com.harper.carnet.ui.intro.adapter.IntroAdapter
 import com.harper.carnet.ui.intro.adapter.IntroViewItem
 import kotlinx.android.synthetic.main.fragment_intro.*
+import org.koin.android.ext.android.inject
 
 class IntroFragment : Fragment(R.layout.fragment_intro) {
+    private val appStorage: AppStorage by inject()
+    private val navController: NavController by lazy {
+        findNavController()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         with(viewPager) {

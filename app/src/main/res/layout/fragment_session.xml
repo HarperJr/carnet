@@ -21,6 +21,7 @@
         android:id="@+id/tabsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
         android:background="@color/colorPrimary"
         app:layout_constraintTop_toBottomOf="@id/values">
 
@@ -28,7 +29,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="2dp"
             android:layout_marginEnd="24dp"
             android:backgroundTint="@color/colorPrimary"
             app:layout_constraintTop_toBottomOf="@id/values"

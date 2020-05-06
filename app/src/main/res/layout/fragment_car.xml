@@ -129,7 +129,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_engine"
-            app:layout_constraintEnd_toStartOf="@+id/icAccumulator"
+            app:layout_constraintEnd_toStartOf="@+id/icTime"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/icAccumulator"
             app:layout_constraintTop_toTopOf="@+id/icAccumulator" />
@@ -145,7 +145,7 @@
             tools:text="36*" />
 
         <ImageView
-            android:id="@+id/icAccumulator"
+            android:id="@+id/icTime"
             style="@style/AppTheme.ActiveIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -161,9 +161,9 @@
             style="@style/AppTheme.Text.Head"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="@id/icAccumulator"
-            app:layout_constraintStart_toStartOf="@id/icAccumulator"
-            app:layout_constraintTop_toBottomOf="@id/icAccumulator"
+            app:layout_constraintEnd_toEndOf="@id/icTime"
+            app:layout_constraintStart_toStartOf="@id/icTime"
+            app:layout_constraintTop_toBottomOf="@id/icTime"
             tools:text="122h" />
 
         <ImageView
@@ -174,8 +174,8 @@
             android:src="@drawable/ic_speedometer"
             app:layout_constraintEnd_toStartOf="@+id/icFuel"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/icAccumulator"
-            app:layout_constraintTop_toTopOf="@+id/icAccumulator" />
+            app:layout_constraintStart_toEndOf="@+id/icTime"
+            app:layout_constraintTop_toTopOf="@+id/icTime" />
 
         <TextView
             android:id="@+id/valueSpped"
