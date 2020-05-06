@@ -1,8 +1,28 @@
 <resources>
     <string name="app_name">Carnet</string>
 
+    <!--MainFragment-->
     <string name="menu_main_item_car">CAR</string>
     <string name="menu_main_item_map">MAP</string>
     <string name="menu_main_item_session">SESSION</string>
     <string name="menu_main_item_settings">SETTINGS</string>
+
+    <!--CarFragment-->
+    <string name="car_last_connection">Last active connection on 07.05.20 14:14</string>
+    <string name="warning_check">Check</string>
+
+    <!--SettingsFragment-->
+    <string name="offline_map_settings_title">Offline map</string>
+    <string name="offline_map_settings_desc">Enables to observe map when you\'re offline</string>
+    <string name="map_settings_title">Map settings</string>
+    <string name="map_settings_desc">Configure your map as you prefer</string>
+    <string name="connection_settings_title">Connection</string>
+    <string name="connection_settings_desc">Configure connection to OBD II device</string>
+    <string name="notifications_sound_settings_title">Notifications sound</string>
+    <string name="notifications_sound_settings_desc">Enables sound when notifications come</string>
+    <string name="notifications_settings_title">Notifications</string>
+    <string name="notifications_settings_desc">Enables notifications</string>
+    <string name="tab_history">History</string>
+    <string name="tab_notifications">Notifications</string>
+
 </resources>

@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.fragment_intro.*
 class IntroFragment : Fragment(R.layout.fragment_intro) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        with (viewPager) {
+        with(viewPager) {
             adapter = IntroAdapter(requireContext(), ITEMS)
             currentItem = savedInstanceState?.getInt(STATE_PAGE_POS) ?: 0
         }

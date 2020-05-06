@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary">
+
+    <ImageView
+        android:id="@+id/icWarnings"
+        style="@style/AppTheme.ActiveIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/ic_round_alert"
+        app:layout_constraintEnd_toStartOf="@+id/icFuel"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/valueAccumulator"
+        style="@style/AppTheme.Text.Head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/icWarnings"
+        app:layout_constraintStart_toStartOf="@id/icWarnings"
+        app:layout_constraintTop_toBottomOf="@id/icWarnings"
+        tools:text="4" />
+
+    <ImageView
+        android:id="@+id/icFuel"
+        style="@style/AppTheme.ActiveIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_fuel"
+        app:layout_constraintEnd_toStartOf="@+id/icAccumulator"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/icWarnings"
+        app:layout_constraintTop_toTopOf="@+id/icWarnings" />
+
+    <TextView
+        android:id="@+id/valueEngine"
+        style="@style/AppTheme.Text.Head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/icFuel"
+        app:layout_constraintStart_toStartOf="@id/icFuel"
+        app:layout_constraintTop_toBottomOf="@id/icFuel"
+        tools:text="2%" />
+
+    <ImageView
+        android:id="@+id/icAccumulator"
+        style="@style/AppTheme.ActiveIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_accumulator"
+        app:layout_constraintEnd_toStartOf="@+id/icSpeed"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/icFuel"
+        app:layout_constraintTop_toTopOf="@+id/icFuel" />
+
+
+    <TextView
+        android:id="@+id/valueTime"
+        style="@style/AppTheme.Text.Head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/icAccumulator"
+        app:layout_constraintStart_toStartOf="@id/icAccumulator"
+        app:layout_constraintTop_toBottomOf="@id/icAccumulator"
+        tools:text="2%" />
+
+    <ImageView
+        android:id="@+id/icSpeed"
+        style="@style/AppTheme.ActiveIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_speedometer"
+        app:layout_constraintEnd_toStartOf="@+id/icRotates"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/icAccumulator"
+        app:layout_constraintTop_toTopOf="@+id/icAccumulator" />
+
+    <TextView
+        android:id="@+id/valueSpped"
+        style="@style/AppTheme.Text.Head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/icSpeed"
+        app:layout_constraintStart_toStartOf="@id/icSpeed"
+        app:layout_constraintTop_toBottomOf="@id/icSpeed"
+        tools:text="52" />
+
+    <ImageView
+        android:id="@+id/icRotates"
+        style="@style/AppTheme.ActiveIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/ic_rotate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/icSpeed"
+        app:layout_constraintTop_toTopOf="@+id/icSpeed" />
+
+    <TextView
+        android:id="@+id/valueFuel"
+        style="@style/AppTheme.Text.Head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/icRotates"
+        app:layout_constraintStart_toStartOf="@id/icRotates"
+        app:layout_constraintTop_toBottomOf="@id/icRotates"
+        tools:text="2" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

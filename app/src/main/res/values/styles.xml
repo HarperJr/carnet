@@ -6,27 +6,35 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorPrimaryDark</item>
     </style>
 
     <style name="AppTheme.Text">
         <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/colorText</item>
     </style>
 
     <style name="AppTheme.Text.Title" parent="AppTheme.Text">
-        <item name="android:textSize">16pt</item>
-        <item name="android:textColor">@color/colorText</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="AppTheme.Text.Subtitle" parent="AppTheme.Text">
-        <item name="android:textSize">14pt</item>
-        <item name="android:textColor">@color/colorText</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="AppTheme.Text.Head" parent="AppTheme.Text">
-        <item name="android:textSize">18pt</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.Text.Head1" parent="AppTheme.Text.Head">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.ActiveIcon">
+        <item name="android:tint">@color/colorAccent</item>
     </style>
 
 </resources>
