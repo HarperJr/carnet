@@ -15,16 +15,16 @@
     </style>
 
     <style name="AppTheme.Text.Title" parent="AppTheme.Text">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="AppTheme.Text.Subtitle" parent="AppTheme.Text">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="AppTheme.Text.Head" parent="AppTheme.Text">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@color/colorAccent</item>
     </style>

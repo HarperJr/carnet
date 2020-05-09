@@ -2,6 +2,8 @@ package com.harper.carnet
 
 import android.app.Application
 import com.harper.carnet.di.AppModule
+import com.harper.carnet.di.DomainModule
+import com.harper.carnet.di.UiModule
 import com.mapbox.mapboxsdk.Mapbox
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -23,7 +25,7 @@ class App : Application() {
         startKoin {
             androidLogger()
             androidContext(baseContext)
-            modules(AppModule())
+            modules(AppModule(), UiModule(), DomainModule())
         }
     }
 }

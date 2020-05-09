@@ -7,7 +7,7 @@
     android:background="@color/colorPrimary">
 
     <ImageView
-        android:id="@+id/icon"
+        android:id="@+id/warningIcon"
         style="@style/AppTheme.ActiveIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,26 +18,27 @@
         tools:src="@drawable/ic_accumulator" />
 
     <TextView
+        android:id="@+id/warningText"
         style="@style/AppTheme.Text.Head1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="24dp"
-        app:layout_constraintBottom_toBottomOf="@id/icon"
+        app:layout_constraintBottom_toBottomOf="@id/warningIcon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/icon"
+        app:layout_constraintStart_toEndOf="@id/warningIcon"
         tools:text="Battery is low - 30% left" />
 
     <TextView
-        android:id="@+id/time"
+        android:id="@+id/warningTime"
         style="@style/AppTheme.Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:layout_marginBottom="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/icon"
-        app:layout_constraintTop_toBottomOf="@id/icon"
+        app:layout_constraintStart_toStartOf="@id/warningIcon"
+        app:layout_constraintTop_toBottomOf="@id/warningIcon"
         tools:text="20 minutes ago" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

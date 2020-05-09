@@ -27,4 +27,11 @@
 
     <string name="skip">Skip</string>
 
+    <!--WarningsHandler-->
+    <string name="warn_low_fuel">Fuel is low - %s left</string>
+    <string name="warn_heat_engine">Engine is heat - %s</string>
+    <string name="warn_low_voltage">Voltage is low - %s</string>
+    <string name="warn_speed_limit">Speed is too high - %s</string>
+    <string name="less_than_minute">Less then mintute ago</string>
+
 </resources>

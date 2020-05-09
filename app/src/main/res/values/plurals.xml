@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="seconds">
+        <item quantity="one">%1$d second ago</item>
+        <item quantity="two">%1$d seconds ago</item>
+        <item quantity="few">%1$d seconds ago</item>
+        <item quantity="many">%1$d seconds ago</item>
+        <item quantity="other">%1$d seconds ago</item>
+    </plurals>
+
+    <plurals name="minutes">
+        <item quantity="one">%1$d minute ago</item>
+        <item quantity="two">2 minutes ago</item>
+        <item quantity="few"> %d minutes ago</item>
+        <item quantity="many"> %d minutes ago</item>
+        <item quantity="other"> %d minutes ago</item>
+    </plurals>
+
+    <plurals name="hours">
+        <item quantity="one">1 hour ago</item>
+        <item quantity="two"> %d hours ago</item>
+        <item quantity="few"> %d hours ago</item>
+        <item quantity="many"> %d hours ago</item>
+        <item quantity="other"> %d hours ago</item>
+    </plurals>
+</resources>

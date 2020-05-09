@@ -46,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <ImageView
-            android:id="@+id/warningIcon"
+            android:id="@+id/carWarningIcon"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_marginEnd="16dp"
@@ -56,14 +56,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/warningText"
+            android:id="@+id/carWarningText"
             style="@style/AppTheme.Text.Head"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/warning_check"
-            app:layout_constraintEnd_toEndOf="@id/warningIcon"
-            app:layout_constraintStart_toStartOf="@id/warningIcon"
-            app:layout_constraintTop_toBottomOf="@id/warningIcon" />
+            app:layout_constraintEnd_toEndOf="@id/carWarningIcon"
+            app:layout_constraintStart_toStartOf="@id/carWarningIcon"
+            app:layout_constraintTop_toBottomOf="@id/carWarningIcon" />
 
         <ImageView
             android:id="@+id/carView"
@@ -178,7 +178,7 @@
             app:layout_constraintTop_toTopOf="@+id/icTime" />
 
         <TextView
-            android:id="@+id/valueSpped"
+            android:id="@+id/valueSpeed"
             style="@style/AppTheme.Text.Head"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
