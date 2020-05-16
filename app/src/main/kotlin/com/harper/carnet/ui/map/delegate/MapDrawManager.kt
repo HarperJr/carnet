@@ -20,11 +20,11 @@ class MapDrawManager(private val mapView: MapView, private val map: MapboxMap, p
     private var sources: MutableList<String> = mutableListOf()
     private var layers: MutableList<String> = mutableListOf()
 
-    fun drawLine(layerName: String, data: List<Point>): Layer {
+    fun drawLine(layerName: String, data: List<Point>, color: Int, opacity: Float, width: Float): Layer {
         return createLayer<LineLayer>(layerName, data).withProperties(
-            PropertyFactory.lineColor(ContextCompat.getColor(mapView.context, R.color.colorAccent)),
-            PropertyFactory.lineOpacity(0.7f),
-            PropertyFactory.lineWidth(7f)
+            PropertyFactory.lineColor(ContextCompat.getColor(mapView.context, color)),
+            PropertyFactory.lineOpacity(opacity),
+            PropertyFactory.lineWidth(width)
         )
     }
 
@@ -40,20 +40,25 @@ class MapDrawManager(private val mapView: MapView, private val map: MapboxMap, p
 
     private inline fun <reified T : Layer> createLayer(layerName: String, data: List<Point>): T {
         val sourceId = getSourceId(layerName)
-        val layer = when (T::class) {
+        val source = style.getSource(sourceId)
+
+        return when (T::class) {
             LineLayer::class -> {
-                val featureCollection = FeatureCollection.fromFeature(Feature.fromGeometry(LineString.fromLngLats(data)))
-                val source = style.getSource(sourceId)
-                if (source != null) {
-                    source.cast<GeoJsonSource>().setGeoJson(featureCollection)
-                } else createSource(sourceId, featureCollection)
+                val featureCollection =
+                    FeatureCollection.fromFeature(Feature.fromGeometry(LineString.fromLngLats(data)))
+                if (source == null) {
+                    createSource(sourceId, featureCollection)
+                } else source.cast<GeoJsonSource>().setGeoJson(featureCollection)
 
                 LineLayer(layerName, sourceId) as T
             }
             else -> throw IllegalArgumentException("Unable to create layer=$layerName")
+        }.also {
+            if (style.getLayer(layerName) == null) {
+                style.addLayer(it)
+                layers.add(it.id)
+            }
         }
-
-        return style.getLayer(layerName)?.cast() ?: layer
     }
 
     private fun createSource(sourceId: String, featureCollection: FeatureCollection): Source {

@@ -16,8 +16,8 @@ class RouteBuilder(private val origin: LatLng, private val dest: LatLng) {
     fun build(context: Context, callback: RouteCallback) {
         NavigationRoute.builder(context)
             .accessToken(BuildConfig.MAPBOX_TOKEN)
-            .origin(Point.fromLngLat(origin.lat, origin.lng))
-            .destination(Point.fromLngLat(dest.lat, dest.lng))
+            .origin(Point.fromLngLat(origin.lng, origin.lat))
+            .destination(Point.fromLngLat(dest.lng, dest.lat))
             .profile(DirectionsCriteria.PROFILE_DRIVING)
             .enableRefresh(true)
             .build()

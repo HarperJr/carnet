@@ -36,7 +36,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         with(viewModel) {
             locationsLiveData.observe(this@MapFragment) {
                 if (!mapDelegate.isRoutingRunning)
-                    mapDelegate.createRoute(it, LatLng(56.139670, 40.397905))
+                    mapDelegate.createRoute(LatLng(56.139736, 40.375598), LatLng(56.139670, 40.397905))
                 mapDelegate.setOriginLocation(it)
             }
             originBtnActiveStateLiveData.observe(this@MapFragment, ::setTrackingState)

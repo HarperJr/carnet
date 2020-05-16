@@ -135,8 +135,8 @@ open class MapDelegate(private val contextProvider: () -> Context) {
         onMapReadyListener = null
         onMapMoveListener = null
         locationComponent = null
-        symbolManager = null
         mapDrawManager = null
+        symbolManager = null
     }
 
     fun withNavigation(): NavigationMapDelegate {
@@ -160,7 +160,7 @@ open class MapDelegate(private val contextProvider: () -> Context) {
 
     companion object {
         private const val MAP_BOX_STYLE_CUSTOM = "mapbox://styles/harperjr/ck9smyr8w003m1inv1tsctb7e"
-        private const val MIN_ZOOM = 12.0
+        private const val MIN_ZOOM = 5.0
         private const val MAX_ZOOM = 20.0
     }
 }
