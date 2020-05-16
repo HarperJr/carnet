@@ -2,15 +2,24 @@ package com.harper.carnet.di
 
 import com.harper.carnet.domain.car.ValuesProvider
 import com.harper.carnet.domain.car.WarningsProvider
+import com.harper.carnet.domain.map.LocationProvider
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
 object DomainModule {
     operator fun invoke(): Module {
         return module {
-            factory { WarningsProvider() }
+            factory {
+                WarningsProvider()
+            }
 
-            factory { ValuesProvider() }
+            factory {
+                ValuesProvider()
+            }
+
+            factory {
+                LocationProvider(get())
+            }
         }
     }
 }

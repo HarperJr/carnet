@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.harper.carnet.R
 import com.harper.carnet.domain.model.Value
 import com.harper.carnet.domain.model.ValueType
 import com.harper.carnet.domain.model.Warning
+import com.harper.carnet.ext.observe
 import com.harper.carnet.ui.car.adapter.WarningsAdapter
 import com.harper.carnet.ui.support.ValueFormatter
 import kotlinx.android.synthetic.main.fragment_car.*
@@ -25,18 +27,20 @@ class CarFragment : Fragment(R.layout.fragment_car) {
     private val viewModel: CarViewModel by currentScope.viewModel(this)
     private val timeHandler: TimeHandler = TimeHandler { onTimeElapsed(it) }
 
-    private val dateFormatter: DateFormat = SimpleDateFormat("E d MMM yyyy", Locale.getDefault())
-    private val timeFormatter: DateFormat = SimpleDateFormat("hh:mm", Locale.getDefault())
+    private val dateFormatter: DateFormat = SimpleDateFormat("E d MMM yyyy", Locale.ENGLISH)
+    private val timeFormatter: DateFormat = SimpleDateFormat("hh:mm", Locale.ENGLISH)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         with(viewModel) {
-            valuesLiveData.observe({ lifecycle }, ::setValues)
-            warningMessageLiveData.observe({ lifecycle }, ::setWarnings)
+            valuesLiveData.observe(this@CarFragment, ::setValues)
+            warningMessageLiveData.observe(this@CarFragment, ::setWarnings)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        toolbar.setNavigationIcon(R.drawable.ic_chart)
+        toolbar.setNavigationOnClickListener { onChartsMenuItemClicked() }
         with(warningsRecycler) {
             addItemDecoration(DividerItemDecoration(requireContext(), RecyclerView.VERTICAL))
             adapter = this@CarFragment.adapter
@@ -58,6 +62,11 @@ class CarFragment : Fragment(R.layout.fragment_car) {
             for (value in values)
                 view!!.findViewById<TextView>(resolveValueId(value)).text = ValueFormatter.format(value)
         }
+    }
+
+    private fun onChartsMenuItemClicked() {
+        Navigation.findNavController(requireActivity(), R.id.nestedNavHostFragment)
+            .navigate(R.id.action_carFragment_to_chartsFragment)
     }
 
     private fun setWarnings(items: List<Warning>) {

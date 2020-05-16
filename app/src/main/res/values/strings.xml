@@ -2,10 +2,15 @@
     <string name="app_name">Carnet</string>
 
     <!--MainFragment-->
+
+    <!--MenuMain-->
     <string name="menu_main_item_car">CAR</string>
     <string name="menu_main_item_map">MAP</string>
     <string name="menu_main_item_session">SESSION</string>
     <string name="menu_main_item_settings">SETTINGS</string>
+
+    <!--MenuCar-->
+    <string name="menu_car_item_connection_status">Connection</string>
 
     <!--CarFragment-->
     <string name="car_last_connection">Last active connection on 07.05.20 14:14</string>
@@ -33,5 +38,9 @@
     <string name="warn_low_voltage">Voltage is low - %s</string>
     <string name="warn_speed_limit">Speed is too high - %s</string>
     <string name="less_than_minute">Less then mintute ago</string>
+    <string name="create_session_hint">There is no active session yet\nCreate new session and score!</string>
+    <string name="btn_create_session">Create session</string>
+    <string name="routing_destination_hint">Where are we going now?</string>
+    <string name="session_start">Start session</string>
 
 </resources>

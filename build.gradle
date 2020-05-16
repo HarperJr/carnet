@@ -13,6 +13,7 @@ buildscript {
         jcenter()
         mavenCentral()
         maven { url "https://jitpack.io" }
+        maven { url 'https://mapbox.bintray.com/mapbox' }
     }
 
     dependencies {
@@ -29,6 +30,7 @@ allprojects {
         jcenter()
         mavenCentral()
         maven { url "https://jitpack.io" }
+        maven { url 'https://mapbox.bintray.com/mapbox' }
     }
 }
 

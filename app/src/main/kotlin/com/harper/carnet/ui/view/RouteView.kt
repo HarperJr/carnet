@@ -33,7 +33,7 @@ class RouteView @JvmOverloads constructor(
             else -> defWidth
         }
 
-        super.setMeasuredDimension(width, height)
+        super.setMeasuredDimension(width, MeasureSpec.getSize(heightMeasureSpec))
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -41,8 +41,6 @@ class RouteView @JvmOverloads constructor(
         canvas.drawCircle(CIRCLE_RADIUS, CIRCLE_RADIUS, CIRCLE_RADIUS, paint)
         canvas.drawCircle(CIRCLE_RADIUS, height - CIRCLE_RADIUS, CIRCLE_RADIUS, paint)
         canvas.drawLine(CIRCLE_RADIUS, CIRCLE_RADIUS, CIRCLE_RADIUS, height - CIRCLE_RADIUS, paint)
-
-        canvas.restore()
     }
 
     companion object {

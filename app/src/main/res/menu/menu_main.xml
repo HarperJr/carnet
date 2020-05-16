@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@id/carFragment"
+        android:id="@id/carNavigation"
         android:icon="@drawable/ic_vehicle"
         android:title="@string/menu_main_item_car"
         app:showAsAction="ifRoom" />

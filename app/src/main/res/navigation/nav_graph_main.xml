@@ -3,19 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_main"
-    app:startDestination="@id/carFragment">
-
-    <fragment
-        android:id="@+id/carFragment"
-        android:name="com.harper.carnet.ui.car.CarFragment"
-        android:label="CarFragment"
-        tools:layout="@layout/fragment_car" />
-
-    <fragment
-        android:id="@+id/sessionsFragment"
-        android:name="com.harper.carnet.ui.session.SessionFragment"
-        android:label="SessionFragment"
-        tools:layout="@layout/fragment_session" />
+    app:startDestination="@id/carNavigation">
 
     <fragment
         android:id="@+id/settingsFragment"
@@ -28,5 +16,34 @@
         android:name="com.harper.carnet.ui.map.MapFragment"
         android:label="MapFragment"
         tools:layout="@layout/fragment_map" />
+
+    <navigation
+        android:id="@+id/carNavigation"
+        android:label="CarGraph"
+        app:startDestination="@id/carFragment">
+
+        <fragment
+            android:id="@+id/chartsFragment"
+            android:name="com.harper.carnet.ui.car.charts.ChartsFragment"
+            android:label="ChartsFragment"
+            tools:layout="@layout/fragment_charts" />
+
+        <fragment
+            android:id="@+id/carFragment"
+            android:name="com.harper.carnet.ui.car.CarFragment"
+            android:label="CarFragment"
+            tools:layout="@layout/fragment_car">
+            <action
+                android:id="@+id/action_carFragment_to_chartsFragment"
+                app:destination="@id/chartsFragment" />
+        </fragment>
+
+    </navigation>
+
+    <fragment
+        android:id="@+id/sessionsFragment"
+        android:name="com.harper.carnet.ui.session.SessionsFragment"
+        android:label="SessionsFragment"
+        tools:layout="@layout/fragment_sessions" />
 
 </navigation>

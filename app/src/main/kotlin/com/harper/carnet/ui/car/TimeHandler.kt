@@ -2,21 +2,27 @@ package com.harper.carnet.ui.car
 
 import android.os.Handler
 import java.util.*
+import java.util.concurrent.atomic.AtomicBoolean
 
 class TimeHandler(private val callback: (Date) -> Unit) {
+    private val isRunning: AtomicBoolean = AtomicBoolean(false)
     private var handler: Handler = Handler()
 
     fun onStart() {
+        isRunning.set(true)
         elapse()
     }
 
     fun onStop() {
+        isRunning.set(false)
         handler.removeCallbacks(runnable)
     }
 
     private fun elapse() {
-        handler.postDelayed(runnable, DELAY)
-        callback.invoke(Date())
+        if (isRunning.get()) {
+            handler.postDelayed(runnable, DELAY)
+            callback.invoke(Date())
+        }
     }
 
     private val runnable: Runnable = Runnable {

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/locationEndInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_margin="24dp"
+        android:hint="@string/routing_destination_hint"
+        android:textColorHint="@color/colorText"
+        app:boxBackgroundColor="@color/colorPrimaryLight"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/locationEndInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/routingTime"
+        style="@style/AppTheme.Text.Title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/locationEndInputLayout"
+        app:layout_constraintStart_toStartOf="@id/locationEndInputLayout"
+        app:layout_constraintTop_toBottomOf="@id/locationEndInputLayout"
+        tools:text="1 hours 12 minutes" />
+
+    <com.harper.carnet.ui.view.RouteView
+        android:id="@+id/routeView"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="@id/routingTime"
+        app:layout_constraintTop_toBottomOf="@id/routingTime"
+        app:routeTint="@color/colorPrimaryLight" />
+
+    <TextView
+        android:id="@+id/locationsStart"
+        style="@style/AppTheme.Text.Subtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        app:layout_constraintEnd_toEndOf="@id/locationEndInputLayout"
+        app:layout_constraintStart_toEndOf="@id/routeView"
+        app:layout_constraintTop_toTopOf="@id/routeView"
+        tools:text="Ul. Mira d. 4" />
+
+    <TextView
+        android:id="@+id/locationsEnd"
+        style="@style/AppTheme.Text.Subtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        app:layout_constraintBottom_toBottomOf="@id/routeView"
+        app:layout_constraintEnd_toEndOf="@id/locationEndInputLayout"
+        app:layout_constraintStart_toEndOf="@id/routeView"
+        tools:text="Pr. Stroiteley d. 214/1" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRoutingApply"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/session_start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/locationsEnd" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
