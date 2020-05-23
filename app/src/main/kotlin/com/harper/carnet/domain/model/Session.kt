@@ -5,8 +5,8 @@ import java.util.*
 
 class Session(
     val id: Int,
-    val timeStart: Date,
-    val timeEnd: Date,
+    val startTime: Date,
+    val endTime: Date,
     val startLocation: Location,
     val endLocation: Location,
     val values: List<Value<*>>,
@@ -31,8 +31,8 @@ class Session(
 
     override fun hashCode(): Int {
         var result = id.hashCode()
-        result = 31 * result + timeStart.hashCode()
-        result = 31 * result + timeEnd.hashCode()
+        result = 31 * result + startTime.hashCode()
+        result = 31 * result + endTime.hashCode()
         result = 31 * result + startLocation.hashCode()
         result = 31 * result + endLocation.hashCode()
         result = 31 * result + values.hashCode()

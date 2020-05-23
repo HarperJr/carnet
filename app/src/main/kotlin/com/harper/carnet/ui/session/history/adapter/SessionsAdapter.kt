@@ -49,13 +49,13 @@ class SessionsAdapter(private val contextProvider: () -> Context) :
 
             origin.text = context.getString(
                 R.string.session_history_location,
-                timeFormatter.format(item.timeStart),
+                timeFormatter.format(item.startTime),
                 item.startLocation.name
             )
 
             destination.text = context.getString(
                 R.string.session_history_location,
-                timeFormatter.format(item.timeEnd),
+                timeFormatter.format(item.endTime),
                 item.endLocation.name
             )
 
