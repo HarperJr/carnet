@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">Carnet</string>
 
-    <!--MainFragment-->
-
     <!--MenuMain-->
     <string name="menu_main_item_car">CAR</string>
     <string name="menu_main_item_map">MAP</string>
@@ -38,9 +36,24 @@
     <string name="warn_low_voltage">Voltage is low - %s</string>
     <string name="warn_speed_limit">Speed is too high - %s</string>
     <string name="less_than_minute">Less then mintute ago</string>
+
+    <!--CreateSessionFragment-->
     <string name="create_session_hint">There is no active session yet\nCreate new session and score!</string>
+
+    <!--MapFragment-->
     <string name="btn_create_session">Create session</string>
     <string name="routing_destination_hint">Where are we going now?</string>
     <string name="session_start">Start session</string>
+
+    <!--RegionsFragment-->
+    <string name="regions_title">Download region</string>
+
+    <!--MenuRegions-->
+    <string name="menu_regions_search">Search</string>
+
+    <!--SessionsFragment-->
+    <string name="session_history_location">%s - %s</string>
+    <string name="notif_dangerous_maneuver">Dangerous maneuver</string>
+    <string name="notif_traffic_congestion">Traffic congestion</string>
 
 </resources>

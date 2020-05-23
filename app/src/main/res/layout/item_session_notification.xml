@@ -1,5 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary">
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/btnNotificationMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:background="?android:selectableItemBackground"
+        android:src="@drawable/ic_vertical_dots"
+        android:tint="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/notificationIcon"
+        style="@style/AppTheme.ActiveIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_round_alert" />
+
+    <TextView
+        android:id="@+id/notificationText"
+        style="@style/AppTheme.Text.Head1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toBottomOf="@id/notificationIcon"
+        app:layout_constraintEnd_toStartOf="@id/btnNotificationMenu"
+        app:layout_constraintStart_toEndOf="@id/notificationIcon"
+        tools:text="Height traffic congestion" />
+
+    <TextView
+        android:id="@+id/notificationTime"
+        style="@style/AppTheme.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/notificationIcon"
+        app:layout_constraintTop_toBottomOf="@id/notificationIcon"
+        tools:text="20 minutes ago" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

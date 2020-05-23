@@ -1,5 +1,5 @@
 package com.harper.carnet.domain.model
 
-class Notification {
+import java.util.*
 
-}
+class Notification(val type: NotificationType, val time: Date, val location: Location)

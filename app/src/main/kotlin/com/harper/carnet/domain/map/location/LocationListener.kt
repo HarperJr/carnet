@@ -1,7 +1,7 @@
-package com.harper.carnet.domain.map
+package com.harper.carnet.domain.map.location
 
 import android.location.Location
 
-interface LocationsListener {
+interface LocationListener {
     fun onLocationReceived(location: Location)
 }

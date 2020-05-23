@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/valueAccumulator"
+        android:id="@+id/valueWarnings"
         style="@style/AppTheme.Text.Head"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
         app:layout_constraintTop_toTopOf="@+id/icWarnings" />
 
     <TextView
-        android:id="@+id/valueEngine"
+        android:id="@+id/valueFuel"
         style="@style/AppTheme.Text.Head"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
 
 
     <TextView
-        android:id="@+id/valueTime"
+        android:id="@+id/valueAccumulator"
         style="@style/AppTheme.Text.Head"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
         app:layout_constraintTop_toTopOf="@+id/icSpeed" />
 
     <TextView
-        android:id="@+id/valueFuel"
+        android:id="@+id/valueRotates"
         style="@style/AppTheme.Text.Head"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

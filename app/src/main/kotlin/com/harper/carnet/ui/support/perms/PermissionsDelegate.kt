@@ -4,7 +4,11 @@ import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 
-class PermissionsDelegate(private val fragment: Fragment, private vararg val permissions: Permission) {
+class PermissionsDelegate(
+    private val fragment: Fragment,
+    private val requestCode: Int,
+    private vararg val permissions: Permission
+) {
     var onPermissionsListener: OnPermissionsListener? = null
 
     fun requestPermissions() {
@@ -17,7 +21,7 @@ class PermissionsDelegate(private val fragment: Fragment, private vararg val per
 
 
     fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (requestCode == REQ_CODE) {
+        if (requestCode == this.requestCode) {
             val grantedPermissions = mutableListOf<Permission>()
             val ungrantedPermissions = mutableListOf<Permission>()
 
@@ -28,8 +32,10 @@ class PermissionsDelegate(private val fragment: Fragment, private vararg val per
                 } else ungrantedPermissions.add(permission)
             }
 
-            onPermissionsListener?.onGrantSuccess(grantedPermissions)
-            onPermissionsListener?.onGrantFail(ungrantedPermissions)
+            if (grantedPermissions.isNotEmpty())
+                onPermissionsListener?.onGrantSuccess(grantedPermissions)
+            if (ungrantedPermissions.isNotEmpty())
+                onPermissionsListener?.onGrantFail(ungrantedPermissions)
         }
     }
 
@@ -47,10 +53,6 @@ class PermissionsDelegate(private val fragment: Fragment, private vararg val per
     }
 
     private fun requestPermissions(permissions: Array<out Permission>) {
-        fragment.requestPermissions(permissions.map { it.manifestString }.toTypedArray(), REQ_CODE)
-    }
-
-    companion object {
-        private const val REQ_CODE = 1024
+        fragment.requestPermissions(permissions.map { it.manifestString }.toTypedArray(), this.requestCode)
     }
 }

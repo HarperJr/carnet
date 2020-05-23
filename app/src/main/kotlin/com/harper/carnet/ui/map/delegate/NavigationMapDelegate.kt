@@ -4,8 +4,8 @@ import android.content.Context
 import android.location.Location
 import com.harper.carnet.BuildConfig
 import com.harper.carnet.R
-import com.harper.carnet.domain.map.RouteBuilder
-import com.harper.carnet.domain.map.RouteCallback
+import com.harper.carnet.domain.map.route.RouteBuilder
+import com.harper.carnet.domain.map.route.RouteCallback
 import com.harper.carnet.domain.model.LatLng
 import com.mapbox.api.directions.v5.models.DirectionsRoute
 import com.mapbox.core.constants.Constants

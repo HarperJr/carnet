@@ -19,20 +19,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (appStorage.getShouldShowIntro()) {
-            navController.navigate(R.id.introFragment)
-        } else navController.navigate(R.id.mainFragment)
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        var currentFragment: Fragment? = null
-        for (fragment in navHostFragment.childFragmentManager.fragments) {
-            if (fragment.isVisible) {
-                currentFragment = fragment
-                break
-            }
-        }
-
-        currentFragment?.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (appStorage.isIntroScreenShown()) {
+            navController.navigate(R.id.mainFragment)
+        } else navController.navigate(R.id.introFragment)
     }
 }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.harper.carnet.domain.model.LatLng
 import com.mapbox.android.gestures.MoveGestureDetector
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
+import com.mapbox.mapboxsdk.geometry.LatLngBounds
 import com.mapbox.mapboxsdk.location.LocationComponent
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
 import com.mapbox.mapboxsdk.location.LocationComponentOptions
@@ -143,6 +144,19 @@ open class MapDelegate(private val contextProvider: () -> Context) {
         return NavigationMapDelegate { context }
     }
 
+    fun focusInBounds(start: LatLng, end: LatLng) {
+        val latNorth = if (start.lat > end.lat) start.lat else end.lat
+        val latSouth = if (start.lat < end.lat) start.lat else end.lat
+        val lonEast = if(start.lng > end.lng) start.lng else end.lng
+        val lonWest = if(start.lng < end.lng) start.lng else end.lng
+
+        map?.setLatLngBoundsForCameraTarget(
+            LatLngBounds.from(
+                latNorth, lonEast, latSouth, lonWest
+            )
+        )
+    }
+
     private val onMoveListener = object : MapboxMap.OnMoveListener {
         override fun onMoveBegin(detector: MoveGestureDetector) {
 
@@ -159,8 +173,9 @@ open class MapDelegate(private val contextProvider: () -> Context) {
     }
 
     companion object {
-        private const val MAP_BOX_STYLE_CUSTOM = "mapbox://styles/harperjr/ck9smyr8w003m1inv1tsctb7e"
-        private const val MIN_ZOOM = 5.0
+        const val MAP_BOX_STYLE_CUSTOM = "mapbox://styles/harperjr/ck9smyr8w003m1inv1tsctb7e"
+
+        private const val MIN_ZOOM = 10.0
         private const val MAX_ZOOM = 20.0
     }
 }

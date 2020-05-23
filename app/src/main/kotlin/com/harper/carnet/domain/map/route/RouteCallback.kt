@@ -1,4 +1,4 @@
-package com.harper.carnet.domain.map
+package com.harper.carnet.domain.map.route
 
 import com.mapbox.api.directions.v5.models.DirectionsRoute
 

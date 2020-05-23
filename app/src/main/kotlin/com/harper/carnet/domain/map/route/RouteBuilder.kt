@@ -1,4 +1,4 @@
-package com.harper.carnet.domain.map
+package com.harper.carnet.domain.map.route
 
 import android.content.Context
 import com.harper.carnet.BuildConfig
@@ -37,6 +37,7 @@ class RouteBuilder(private val origin: LatLng, private val dest: LatLng) {
 
     companion object {
 
-        fun builder(origin: LatLng, dest: LatLng): RouteBuilder = RouteBuilder(origin, dest)
+        fun builder(origin: LatLng, dest: LatLng): RouteBuilder =
+            RouteBuilder(origin, dest)
     }
 }

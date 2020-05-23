@@ -6,12 +6,6 @@
     app:startDestination="@id/carNavigation">
 
     <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.harper.carnet.ui.settings.SettingsFragment"
-        android:label="SettingsFragment"
-        tools:layout="@layout/fragment_settings" />
-
-    <fragment
         android:id="@+id/mapFragment"
         android:name="com.harper.carnet.ui.map.MapFragment"
         android:label="MapFragment"
@@ -40,10 +34,43 @@
 
     </navigation>
 
-    <fragment
-        android:id="@+id/sessionsFragment"
-        android:name="com.harper.carnet.ui.session.SessionsFragment"
-        android:label="SessionsFragment"
-        tools:layout="@layout/fragment_sessions" />
+    <navigation
+        android:id="@+id/sessionsNavigation"
+        android:label="SessionsGraph"
+        app:startDestination="@id/sessionsFragment">
+        <fragment
+            android:id="@+id/sessionsDetailFragment"
+            android:name="com.harper.carnet.ui.session.detail.SessionsDetailFragment"
+            android:label="SessionsDetailFragment"
+            tools:layout="@layout/fragment_session_detail" />
+        <fragment
+            android:id="@+id/sessionsFragment"
+            android:name="com.harper.carnet.ui.session.SessionsFragment"
+            android:label="SessionsFragment"
+            tools:layout="@layout/fragment_sessions">
+            <action
+                android:id="@+id/action_sessionsFragment_to_sessionsDetailFragment"
+                app:destination="@id/sessionsDetailFragment" />
+        </fragment>
+    </navigation>
+    <navigation
+        android:id="@+id/settingsNavigation"
+        android:label="SettignsGraph"
+        app:startDestination="@id/settingsFragment">
+        <fragment
+            android:id="@+id/regionsFragment"
+            android:name="com.harper.carnet.ui.settings.regions.RegionsFragment"
+            android:label="RegionsFragment"
+            tools:layout="@layout/fragment_regions" />
+        <fragment
+            android:id="@+id/settingsFragment"
+            android:name="com.harper.carnet.ui.settings.SettingsFragment"
+            android:label="SettingsFragment"
+            tools:layout="@layout/fragment_settings">
+            <action
+                android:id="@+id/action_settingsFragment_to_regionsFragment"
+                app:destination="@id/regionsFragment" />
+        </fragment>
+    </navigation>
 
 </navigation>

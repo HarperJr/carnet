@@ -59,8 +59,11 @@ class CarFragment : Fragment(R.layout.fragment_car) {
 
     private fun setValues(values: List<Value<*>>) {
         if (view != null) {
-            for (value in values)
-                view!!.findViewById<TextView>(resolveValueId(value)).text = ValueFormatter.format(value)
+            for (value in values) {
+                val viewId = resolveValueId(value)
+                if (viewId != -1)
+                    view!!.findViewById<TextView>(viewId).text = ValueFormatter.format(value)
+            }
         }
     }
 
@@ -74,8 +77,7 @@ class CarFragment : Fragment(R.layout.fragment_car) {
     }
 
     private fun resolveValueId(value: Value<*>): Int {
-        return VALUE_IDS[value.type]
-            ?: throw IllegalArgumentException("Unable to resolve value id by type=${value.type}")
+        return VALUE_IDS[value.type] ?: -1
     }
 
     private fun onTimeElapsed(date: Date) {

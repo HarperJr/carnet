@@ -40,7 +40,7 @@ class IntroFragment : Fragment(R.layout.fragment_intro) {
     }
 
     private fun completeIntro() {
-        appStorage.setShouldShowIntro(false)
+        appStorage.setIntroScreenShown(true)
         navController.navigate(R.id.mainFragment)
     }
 

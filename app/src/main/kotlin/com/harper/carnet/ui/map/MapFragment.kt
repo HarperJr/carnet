@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.harper.carnet.R
 import com.harper.carnet.domain.model.LatLng
+import com.harper.carnet.domain.model.ValueType
 import com.harper.carnet.ext.cast
 import com.harper.carnet.ext.observe
 import com.harper.carnet.ui.map.behaviour.RoutingBottomSheetBehaviour
@@ -26,7 +27,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     private val viewModel: MapViewModel by currentScope.viewModel(this)
     private val mapDelegate: NavigationMapDelegate = MapDelegate { requireContext() }.withNavigation()
     private val permissionsDelegate: PermissionsDelegate =
-        PermissionsDelegate(this, Permission.COARSE_LOCATION, Permission.FINE_LOCATION)
+        PermissionsDelegate(this, 4084, Permission.COARSE_LOCATION, Permission.FINE_LOCATION)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +37,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         with(viewModel) {
             locationsLiveData.observe(this@MapFragment) {
                 if (!mapDelegate.isRoutingRunning)
-                    mapDelegate.createRoute(LatLng(56.139736, 40.375598), LatLng(56.139670, 40.397905))
+                    mapDelegate.createRoute(it, LatLng(56.139670, 40.397905))
                 mapDelegate.setOriginLocation(it)
             }
             originBtnActiveStateLiveData.observe(this@MapFragment, ::setTrackingState)

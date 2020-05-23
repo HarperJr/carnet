@@ -1,4 +1,4 @@
-package com.harper.carnet.domain.map
+package com.harper.carnet.domain.map.location
 
 import android.content.Context
 import com.google.android.gms.location.LocationCallback
