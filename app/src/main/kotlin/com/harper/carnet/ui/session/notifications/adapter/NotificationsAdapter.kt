@@ -11,7 +11,6 @@ import com.harper.carnet.R
 import com.harper.carnet.domain.model.Notification
 import com.harper.carnet.ui.support.NotificationsHandler
 import com.harper.carnet.ui.support.TimeFormatter
-import com.harper.carnet.ui.support.WarningsHandler
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_session_notification.*
 
@@ -33,7 +32,7 @@ class NotificationsAdapter(private val contextProvider: () -> Context) :
         fun bind(item: Notification) {
             notificationIcon.setImageResource(NotificationsHandler.resolveIcon(item.type))
             notificationText.text = NotificationsHandler.resolveText(context, item.type)
-            notificationTime.text = TimeFormatter.format(context, item.time)
+            placeSub.text = TimeFormatter.format(context, item.time)
         }
     }
 

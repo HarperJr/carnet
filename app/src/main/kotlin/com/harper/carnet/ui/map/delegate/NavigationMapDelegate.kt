@@ -4,8 +4,8 @@ import android.content.Context
 import android.location.Location
 import com.harper.carnet.BuildConfig
 import com.harper.carnet.R
-import com.harper.carnet.domain.map.route.RouteBuilder
 import com.harper.carnet.domain.map.route.RouteCallback
+import com.harper.carnet.domain.map.route.RouteProvider
 import com.harper.carnet.domain.model.LatLng
 import com.mapbox.api.directions.v5.models.DirectionsRoute
 import com.mapbox.core.constants.Constants
@@ -82,16 +82,15 @@ class NavigationMapDelegate(contextProvider: () -> Context) : MapDelegate(contex
     }
 
     fun createRoute(origin: LatLng, dest: LatLng) {
-        RouteBuilder.builder(origin, dest)
-            .build(context, object : RouteCallback {
-                override fun onSuccess(route: DirectionsRoute) {
-                    resetNavigationRoute(route)
-                }
+        RouteProvider.provide(context, origin, dest, object : RouteCallback {
+            override fun onSuccess(route: DirectionsRoute) {
+                resetNavigationRoute(route)
+            }
 
-                override fun onFail(throwable: Throwable) {
-                    Timber.e(throwable)
-                }
-            })
+            override fun onFail(throwable: Throwable) {
+                Timber.e(throwable)
+            }
+        })
 
     }
 

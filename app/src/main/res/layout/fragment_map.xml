@@ -37,7 +37,7 @@
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="24dp"
             android:backgroundTint="@color/colorPrimaryLight"
-            android:src="@drawable/ic_routing"
+            android:src="@drawable/ic_add_notification"
             android:tint="@color/colorAccent"
             app:borderWidth="0dp"
             app:fabCustomSize="42dp"
@@ -46,13 +46,5 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <include
-        android:id="@+id/routingBottomSheet"
-        layout="@layout/include_routing_bottom_sheet"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:behavior_hideable="true" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

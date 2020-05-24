@@ -51,7 +51,7 @@ class SessionsFragment : Fragment(R.layout.fragment_sessions) {
 
     private fun onCreateSessionBtnClicked() {
         Navigation.findNavController(requireActivity(), R.id.nestedNavHostFragment)
-            .navigate(R.id.mapFragment, MapFragment.createSessionArg())
+            .navigate(R.id.sessionCreateFragment)
     }
 
     override fun onDestroyView() {

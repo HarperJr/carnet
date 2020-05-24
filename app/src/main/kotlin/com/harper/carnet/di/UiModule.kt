@@ -6,6 +6,8 @@ import com.harper.carnet.ui.map.MapFragment
 import com.harper.carnet.ui.map.MapViewModel
 import com.harper.carnet.ui.session.SessionsFragment
 import com.harper.carnet.ui.session.SessionsViewModel
+import com.harper.carnet.ui.session.create.SessionCreateFragment
+import com.harper.carnet.ui.session.create.SessionCreateViewModel
 import com.harper.carnet.ui.settings.regions.RegionsFragment
 import com.harper.carnet.ui.settings.regions.RegionsViewModel
 import org.koin.android.viewmodel.dsl.viewModel
@@ -36,6 +38,12 @@ object UiModule {
             scope<RegionsFragment> {
                 viewModel {
                     RegionsViewModel(get())
+                }
+            }
+
+            scope<SessionCreateFragment> {
+                viewModel {
+                    SessionCreateViewModel(get())
                 }
             }
         }

@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
+import timber.log.Timber
 
 inline fun <reified T> Any.cast(): T =
     this as? T ?: throw RuntimeException("Unable to cast ${this::class} to ${T::class}")
@@ -14,7 +15,7 @@ fun <T> rxLiveData(rxFlow: () -> Observable<T>): LiveData<T> = object : LiveData
     private var disposable: Disposable = Disposables.disposed()
 
     override fun onActive() {
-        disposable = rxFlow.invoke().subscribe { this.value = it }
+        disposable = rxFlow.invoke().subscribe({ this.value = it }, { Timber.e(it) })
     }
 
     override fun onInactive() {

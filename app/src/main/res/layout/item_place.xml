@@ -7,19 +7,7 @@
     android:background="@color/colorPrimary">
 
     <ImageView
-        android:id="@+id/btnNotificationMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:background="?android:selectableItemBackground"
-        android:src="@drawable/ic_vertical_dots"
-        android:tint="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/notificationIcon"
+        android:id="@+id/placeTypeIcon"
         style="@style/AppTheme.ActiveIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,16 +18,17 @@
         tools:src="@drawable/ic_round_alert" />
 
     <TextView
-        android:id="@+id/notificationText"
+        android:id="@+id/placeName"
         style="@style/AppTheme.Text.Head1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginEnd="24dp"
-        app:layout_constraintBottom_toBottomOf="@id/notificationIcon"
-        app:layout_constraintEnd_toStartOf="@id/btnNotificationMenu"
-        app:layout_constraintStart_toEndOf="@id/notificationIcon"
-        tools:text="Height traffic congestion" />
+        android:layout_marginEnd="8dp"
+        android:lines="1"
+        app:layout_constraintBottom_toBottomOf="@id/placeTypeIcon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/placeTypeIcon"
+        tools:text="Ul. mira d 4" />
 
     <TextView
         android:id="@+id/placeSub"
@@ -49,8 +38,8 @@
         android:layout_marginTop="6dp"
         android:layout_marginBottom="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/notificationIcon"
-        app:layout_constraintTop_toBottomOf="@id/notificationIcon"
-        tools:text="20 minutes ago" />
+        app:layout_constraintStart_toStartOf="@id/placeTypeIcon"
+        app:layout_constraintTop_toBottomOf="@id/placeTypeIcon"
+        tools:text="244 m" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

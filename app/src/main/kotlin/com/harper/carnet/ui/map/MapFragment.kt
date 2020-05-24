@@ -3,16 +3,11 @@ package com.harper.carnet.ui.map
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.NonNull
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import com.google.android.material.bottomsheet.BottomSheetBehavior
+import androidx.navigation.Navigation
 import com.harper.carnet.R
 import com.harper.carnet.domain.model.LatLng
-import com.harper.carnet.domain.model.ValueType
-import com.harper.carnet.ext.cast
 import com.harper.carnet.ext.observe
-import com.harper.carnet.ui.map.behaviour.RoutingBottomSheetBehaviour
 import com.harper.carnet.ui.map.delegate.MapDelegate
 import com.harper.carnet.ui.map.delegate.NavigationMapDelegate
 import com.harper.carnet.ui.support.perms.OnPermissionsListener
@@ -49,14 +44,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
         permissionsDelegate.onPermissionsListener = onPermissionsListener
         btnOrigin.setOnClickListener { viewModel.onUserOriginBtnClicked() }
-        btnNewSession.setOnClickListener { revealSessionBottomTab() }
-
-
-        routingBottomSheet.layoutParams.cast<CoordinatorLayout.LayoutParams>().behavior =
-            RoutingBottomSheetBehaviour<View>()
-
-        if (isOpenedForNewSession())
-            revealSessionBottomTab()
+        btnNewSession.setOnClickListener { onSessionBtnClicked() }
     }
 
     override fun onSaveInstanceState(@NonNull outState: Bundle) {
@@ -101,14 +89,9 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         permissionsDelegate.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    private fun revealSessionBottomTab() {
-        val bottomSheetBvr = routingBottomSheet.layoutParams.cast<CoordinatorLayout.LayoutParams>().behavior!!
-            .cast<RoutingBottomSheetBehaviour<*>>()
-        bottomSheetBvr.state = BottomSheetBehavior.STATE_EXPANDED
-    }
-
-    private fun isOpenedForNewSession(): Boolean {
-        return arguments?.getBoolean(ARG_CREATE_SESSION) ?: false
+    private fun onSessionBtnClicked() {
+        Navigation.findNavController(requireActivity(), R.id.nestedNavHostFragment)
+            .navigate(R.id.sessionCreateFragment)
     }
 
     private fun prepareMap() {
@@ -133,11 +116,5 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 permissionsDelegate.requestPermissions()
             }
         }
-    }
-
-    companion object {
-        private const val ARG_CREATE_SESSION = "ARG_CREATE_SESSION"
-
-        fun createSessionArg(): Bundle = bundleOf(ARG_CREATE_SESSION to true)
     }
 }

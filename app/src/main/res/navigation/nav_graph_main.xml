@@ -51,7 +51,15 @@
             <action
                 android:id="@+id/action_sessionsFragment_to_sessionsDetailFragment"
                 app:destination="@id/sessionsDetailFragment" />
+            <action
+                android:id="@+id/action_sessionsFragment_to_sessionCreateFragment"
+                app:destination="@id/sessionCreateFragment" />
         </fragment>
+        <fragment
+            android:id="@+id/sessionCreateFragment"
+            android:name="com.harper.carnet.ui.session.create.SessionCreateFragment"
+            android:label="SessionCreateFragment"
+            tools:layout="@layout/fragment_session_create" />
     </navigation>
     <navigation
         android:id="@+id/settingsNavigation"

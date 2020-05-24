@@ -55,5 +55,7 @@
     <string name="session_history_location">%s - %s</string>
     <string name="notif_dangerous_maneuver">Dangerous maneuver</string>
     <string name="notif_traffic_congestion">Traffic congestion</string>
+    <string name="my_location">My location</string>
+    <string name="create_session_title">Create new session</string>
 
 </resources>

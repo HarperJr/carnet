@@ -11,9 +11,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RouteBuilder(private val origin: LatLng, private val dest: LatLng) {
+object RouteProvider {
 
-    fun build(context: Context, callback: RouteCallback) {
+    fun provide(context: Context, origin: LatLng, dest: LatLng, callback: RouteCallback) {
         NavigationRoute.builder(context)
             .accessToken(BuildConfig.MAPBOX_TOKEN)
             .origin(Point.fromLngLat(origin.lng, origin.lat))
@@ -33,11 +33,5 @@ class RouteBuilder(private val origin: LatLng, private val dest: LatLng) {
                     callback.onFail(t)
                 }
             })
-    }
-
-    companion object {
-
-        fun builder(origin: LatLng, dest: LatLng): RouteBuilder =
-            RouteBuilder(origin, dest)
     }
 }

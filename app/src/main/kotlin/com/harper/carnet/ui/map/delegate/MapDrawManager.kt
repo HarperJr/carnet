@@ -1,5 +1,6 @@
 package com.harper.carnet.ui.map.delegate
 
+import android.content.Context
 import androidx.core.content.ContextCompat
 import com.harper.carnet.R
 import com.harper.carnet.ext.cast
@@ -16,13 +17,13 @@ import com.mapbox.mapboxsdk.style.layers.PropertyFactory
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource
 import com.mapbox.mapboxsdk.style.sources.Source
 
-class MapDrawManager(private val mapView: MapView, private val map: MapboxMap, private val style: Style) {
+class MapDrawManager(private val context: Context, private val style: Style) {
     private var sources: MutableList<String> = mutableListOf()
     private var layers: MutableList<String> = mutableListOf()
 
     fun drawLine(layerName: String, data: List<Point>, color: Int, opacity: Float, width: Float): Layer {
         return createLayer<LineLayer>(layerName, data).withProperties(
-            PropertyFactory.lineColor(ContextCompat.getColor(mapView.context, color)),
+            PropertyFactory.lineColor(ContextCompat.getColor(context, color)),
             PropertyFactory.lineOpacity(opacity),
             PropertyFactory.lineWidth(width)
         )

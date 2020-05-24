@@ -23,10 +23,12 @@ open class MapDelegate(private val contextProvider: () -> Context) {
     var onMapReadyListener: (() -> Unit)? = null
     var onMapMoveListener: (() -> Unit)? = null
 
+    var lastLocation: LatLng = LatLng.ZERO
+        private set
+
     protected var map: MapboxMap? = null
     protected var mapDrawManager: MapDrawManager? = null
     protected var isTracking: Boolean = false
-    protected var lastLocation: LatLng = LatLng.ZERO
 
 
     private var mapView: MapView? = null
@@ -68,7 +70,7 @@ open class MapDelegate(private val contextProvider: () -> Context) {
                     setMaxZoomPreference(MAX_ZOOM)
                 }
                 this@MapDelegate.symbolManager = SymbolManager(mapView, map, style)
-                this@MapDelegate.mapDrawManager = MapDrawManager(mapView, map, style)
+                this@MapDelegate.mapDrawManager = MapDrawManager(context, style)
             }
             this@MapDelegate.locationComponent = map.locationComponent
         }
@@ -147,8 +149,8 @@ open class MapDelegate(private val contextProvider: () -> Context) {
     fun focusInBounds(start: LatLng, end: LatLng) {
         val latNorth = if (start.lat > end.lat) start.lat else end.lat
         val latSouth = if (start.lat < end.lat) start.lat else end.lat
-        val lonEast = if(start.lng > end.lng) start.lng else end.lng
-        val lonWest = if(start.lng < end.lng) start.lng else end.lng
+        val lonEast = if (start.lng > end.lng) start.lng else end.lng
+        val lonWest = if (start.lng < end.lng) start.lng else end.lng
 
         map?.setLatLngBoundsForCameraTarget(
             LatLngBounds.from(
