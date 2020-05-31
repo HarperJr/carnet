@@ -4,9 +4,9 @@ import com.harper.carnet.data.database.dao.RegionsDao
 import com.harper.carnet.data.database.dao.SessionsDao
 import kotlin.reflect.KClass
 
-enum class Tables(val tableName: String, val daoClass: KClass<*>) {
-    REGIONS(Tables.REGIONS_TABLE, RegionsDao::class),
-    SESSIONS(Tables.SESSIONS_TABLE, SessionsDao::class);
+enum class Table(val tableName: String, val daoClass: KClass<*>) {
+    REGIONS(Table.REGIONS_TABLE, RegionsDao::class),
+    SESSIONS(Table.SESSIONS_TABLE, SessionsDao::class);
 
     companion object {
         const val SESSION_VALUES_TABLE = "Values"
@@ -15,5 +15,6 @@ enum class Tables(val tableName: String, val daoClass: KClass<*>) {
         const val NOTIFICATIONS_TABLE = "Notifications"
 
         fun fromDao(daoClass: KClass<*>) = values().find { it.daoClass == daoClass }
+            ?: throw IllegalArgumentException("Unable to fine table by dao class=$daoClass")
     }
 }

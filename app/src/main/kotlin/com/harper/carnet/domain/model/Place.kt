@@ -1,3 +1,3 @@
 package com.harper.carnet.domain.model
 
-class Place(val place: String, val types: List<String>?, val location: LatLng?)
+class Place(val name: String, val location: LatLng, val types: List<String>?)

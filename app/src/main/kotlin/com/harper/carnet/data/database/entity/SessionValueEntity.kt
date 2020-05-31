@@ -4,12 +4,12 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.TypeConverters
-import com.harper.carnet.data.database.Tables
+import com.harper.carnet.data.database.Table
 import com.harper.carnet.data.database.entity.base.BaseEntity
 import com.harper.carnet.data.database.entity.converter.SessionValueEntityConverter
 
 @Entity(
-    tableName = Tables.SESSION_VALUES_TABLE,
+    tableName = Table.SESSION_VALUES_TABLE,
     foreignKeys = [
         ForeignKey(
             entity = SessionEntity::class,

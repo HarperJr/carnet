@@ -9,10 +9,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.harper.carnet.R
 import com.harper.carnet.domain.model.Place
+import com.harper.carnet.ui.support.Keyboard
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_place.*
 
-class SearchHintsAdapter(private val onItemClickListener: (Place) -> Unit, private val contextProvider: () -> Context) :
+class SearchHintsAdapter(private val contextProvider: () -> Context, private val onItemClickListener: (Place) -> Unit) :
     ListAdapter<Place, SearchHintsAdapter.ViewHolder>(DiffUtilCallback) {
     private val context: Context
         get() = contextProvider.invoke()
@@ -29,9 +30,10 @@ class SearchHintsAdapter(private val onItemClickListener: (Place) -> Unit, priva
 
         fun bind(item: Place) {
             placeTypeIcon.setImageResource(R.drawable.ic_place)
-            placeName.text = item.place
+            placeName.text = item.name
             itemView.setOnClickListener {
                 onItemClickListener.invoke(item)
+                Keyboard.hide(itemView)
             }
         }
     }

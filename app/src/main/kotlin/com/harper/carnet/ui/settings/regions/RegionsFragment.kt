@@ -1,5 +1,7 @@
 package com.harper.carnet.ui.settings.regions
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -12,10 +14,10 @@ import com.harper.carnet.R
 import com.harper.carnet.domain.model.Region
 import com.harper.carnet.ext.observe
 import com.harper.carnet.ui.settings.regions.adapter.RegionsAdapter
+import com.harper.carnet.ui.settings.regions.service.RegionLoadingService
 import kotlinx.android.synthetic.main.fragment_regions.*
 import org.koin.android.scope.currentScope
 import org.koin.android.viewmodel.scope.viewModel
-import timber.log.Timber
 
 class RegionsFragment : Fragment(R.layout.fragment_regions) {
     private val viewModel: RegionsViewModel by currentScope.viewModel(this)
@@ -54,6 +56,24 @@ class RegionsFragment : Fragment(R.layout.fragment_regions) {
     }
 
     private fun onRegionItemClicked(region: Region) {
-        Timber.d("Region is clicked, region=$region")
+        startRegionLoadingService(region)
+    }
+
+    private fun startRegionLoadingService(region: Region) {
+        requireActivity().startService(Intent(requireContext(), RegionLoadingService::class.java).apply {
+            putExtra(
+                RegionLoadingService.REGION_EXTRA,
+                region
+            )
+        })
+        bindRegionLoadingService()
+    }
+
+    private fun bindRegionLoadingService() {
+        requireActivity().bindService(
+            Intent(requireContext(), RegionLoadingService::class.java),
+            viewModel.getServiceConnection(),
+            Context.BIND_AUTO_CREATE
+        )
     }
 }

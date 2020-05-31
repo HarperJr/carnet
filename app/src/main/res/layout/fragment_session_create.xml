@@ -24,11 +24,12 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/destEditTextLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
+            android:background="@color/colorPrimary"
             android:hint="@string/routing_destination_hint"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -36,6 +37,10 @@
                 android:id="@+id/destEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:inputType="text"
+                android:maxLines="1"
+                android:scrollHorizontally="true"
                 android:textColor="@color/colorAccent" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -50,18 +55,31 @@
         app:layout_constraintTop_toBottomOf="@id/searchContainer">
 
         <include
-            android:id="@+id/session_container_default"
+            android:id="@+id/session_container_create"
             layout="@layout/include_session_create_default"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_hints_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="2dp"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_place" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_history_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="2dp"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/session_container"
+            tools:listitem="@layout/item_search_history" />
 
     </FrameLayout>
 

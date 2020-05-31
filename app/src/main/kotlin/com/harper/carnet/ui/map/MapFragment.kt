@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import com.harper.carnet.R
 import com.harper.carnet.domain.model.LatLng
 import com.harper.carnet.ext.observe
@@ -90,8 +89,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     }
 
     private fun onSessionBtnClicked() {
-        Navigation.findNavController(requireActivity(), R.id.nestedNavHostFragment)
-            .navigate(R.id.sessionCreateFragment)
+
     }
 
     private fun prepareMap() {

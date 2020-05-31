@@ -2,14 +2,19 @@ package com.harper.carnet.ui.map.delegate
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import com.harper.carnet.domain.model.LatLng
+import com.harper.carnet.ui.support.Constants.MAX_ZOOM
+import com.harper.carnet.ui.support.Constants.MIN_ZOOM
 import com.mapbox.android.gestures.MoveGestureDetector
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLngBounds
 import com.mapbox.mapboxsdk.location.LocationComponent
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
 import com.mapbox.mapboxsdk.location.LocationComponentOptions
+import com.mapbox.mapboxsdk.location.modes.CameraMode
 import com.mapbox.mapboxsdk.location.modes.RenderMode
 import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
@@ -23,20 +28,21 @@ open class MapDelegate(private val contextProvider: () -> Context) {
     var onMapReadyListener: (() -> Unit)? = null
     var onMapMoveListener: (() -> Unit)? = null
 
-    var lastLocation: LatLng = LatLng.ZERO
+    var currentLocation: LatLng = LatLng.ZERO
+        private set
+
+    var isMapReady: Boolean = false
         private set
 
     protected var map: MapboxMap? = null
-    protected var mapDrawManager: MapDrawManager? = null
     protected var isTracking: Boolean = false
+    protected var mapDrawManager: MapDrawManager? = null
 
 
-    private var mapView: MapView? = null
     private var style: Style? = null
-
-    private var locationComponent: LocationComponent? = null
-
+    private var mapView: MapView? = null
     private var symbolManager: SymbolManager? = null
+    private var locationComponent: LocationComponent? = null
 
     @SuppressLint("MissingPermission")
     open fun onMapReady(mapView: MapView, map: MapboxMap) {
@@ -59,6 +65,7 @@ open class MapDelegate(private val contextProvider: () -> Context) {
                             .build()
                         activateLocationComponent(options)
                         isLocationComponentEnabled = true
+                        cameraMode = CameraMode.TRACKING;
                         renderMode = RenderMode.GPS
                     }
                     with(uiSettings) {
@@ -75,27 +82,7 @@ open class MapDelegate(private val contextProvider: () -> Context) {
             this@MapDelegate.locationComponent = map.locationComponent
         }
         onMapReadyListener?.invoke()
-    }
-
-    fun setIsTracking(isTracking: Boolean) {
-        this.isTracking = isTracking
-    }
-
-    fun zoomIn() {
-        map?.animateCamera(CameraUpdateFactory.zoomIn())
-    }
-
-    fun zoomOut() {
-        map?.animateCamera(CameraUpdateFactory.zoomOut())
-    }
-
-    fun zoom(zoom: Double) {
-        map?.animateCamera(CameraUpdateFactory.zoomBy(zoom))
-    }
-
-    fun setOriginLocation(location: LatLng) {
-        map?.moveCamera(CameraUpdateFactory.newLatLng(com.mapbox.mapboxsdk.geometry.LatLng(location.lat, location.lng)))
-        lastLocation = location
+        isMapReady = true
     }
 
     open fun onCreate(savedInstanceState: Bundle?) {
@@ -140,13 +127,34 @@ open class MapDelegate(private val contextProvider: () -> Context) {
         locationComponent = null
         mapDrawManager = null
         symbolManager = null
+        isMapReady = false
     }
 
-    fun withNavigation(): NavigationMapDelegate {
-        return NavigationMapDelegate { context }
+    fun zoomIn() {
+        map?.animateCamera(CameraUpdateFactory.zoomIn())
     }
 
-    fun focusInBounds(start: LatLng, end: LatLng) {
+    fun zoomOut() {
+        map?.animateCamera(CameraUpdateFactory.zoomOut())
+    }
+
+    fun setZoom(zoom: Double) {
+        map?.animateCamera(CameraUpdateFactory.zoomBy(zoom))
+    }
+
+    fun setIsTracking(isTracking: Boolean) {
+        this.isTracking = isTracking
+    }
+
+    fun setOriginLocation(location: LatLng) {
+        currentLocation = location
+        locationComponent?.forceLocationUpdate(Location(LocationManager.GPS_PROVIDER).apply {
+            longitude = currentLocation.lng
+            latitude = currentLocation.lat
+        })
+    }
+
+    fun setFocusInBounds(start: LatLng, end: LatLng) {
         val latNorth = if (start.lat > end.lat) start.lat else end.lat
         val latSouth = if (start.lat < end.lat) start.lat else end.lat
         val lonEast = if (start.lng > end.lng) start.lng else end.lng
@@ -157,6 +165,10 @@ open class MapDelegate(private val contextProvider: () -> Context) {
                 latNorth, lonEast, latSouth, lonWest
             )
         )
+    }
+
+    fun withNavigation(): NavigationMapDelegate {
+        return NavigationMapDelegate { context }
     }
 
     private val onMoveListener = object : MapboxMap.OnMoveListener {
@@ -176,8 +188,5 @@ open class MapDelegate(private val contextProvider: () -> Context) {
 
     companion object {
         const val MAP_BOX_STYLE_CUSTOM = "mapbox://styles/harperjr/ck9smyr8w003m1inv1tsctb7e"
-
-        private const val MIN_ZOOM = 10.0
-        private const val MAX_ZOOM = 20.0
     }
 }

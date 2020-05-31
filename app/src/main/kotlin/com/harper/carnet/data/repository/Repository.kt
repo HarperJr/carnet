@@ -2,7 +2,7 @@ package com.harper.carnet.data.repository
 
 interface Repository<T> {
 
-    fun find(id: Int)
+    fun find(id: Int): T
 
     fun insert(model: T)
 

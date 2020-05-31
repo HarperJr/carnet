@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.TypeConverters
-import com.harper.carnet.data.database.Tables
+import com.harper.carnet.data.database.Table
 import com.harper.carnet.data.database.entity.base.BaseEntity
 import com.harper.carnet.data.database.entity.converter.DateConverter
 import com.harper.carnet.data.database.entity.converter.LatLngEntityConverter
@@ -12,7 +12,7 @@ import com.harper.carnet.data.database.entity.converter.NotificationTypeEntityCo
 import java.util.*
 
 @Entity(
-    tableName = Tables.NOTIFICATIONS_TABLE,
+    tableName = Table.NOTIFICATIONS_TABLE,
     foreignKeys = [ForeignKey(
         entity = SessionEntity::class,
         parentColumns = ["id"],

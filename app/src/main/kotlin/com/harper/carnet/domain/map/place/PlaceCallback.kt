@@ -1,10 +1,10 @@
 package com.harper.carnet.domain.map.place
 
-import com.mapbox.api.geocoding.v5.models.CarmenFeature
+import com.harper.carnet.domain.model.Place
 
 interface PlaceCallback {
 
-    fun onSuccess(features: List<CarmenFeature>)
+    fun onSuccess(places: List<Place>)
 
     fun onFail(throwable: Throwable)
 }

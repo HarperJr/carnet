@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.harper.carnet.R
 import com.harper.carnet.domain.model.Place
 import com.harper.carnet.ext.observe
+import com.harper.carnet.ui.map.delegate.MapDelegate
+import com.harper.carnet.ui.map.delegate.NavigationMapDelegate
 import com.harper.carnet.ui.session.create.adapter.SearchHintsAdapter
 import com.harper.carnet.ui.session.create.adapter.SearchHistoryAdapter
 import kotlinx.android.synthetic.main.fragment_session_create.*
@@ -23,18 +26,25 @@ import org.koin.android.viewmodel.scope.viewModel
  **/
 class SessionCreateFragment : Fragment(R.layout.fragment_session_create) {
     private val viewModel: SessionCreateViewModel by currentScope.viewModel(this)
+    private val mapDelegate: NavigationMapDelegate = MapDelegate { requireContext() }.withNavigation()
     private var currentLayoutState: LayoutState = LayoutState.DEFAULT
 
     private val searchHistoryAdapter: SearchHistoryAdapter = SearchHistoryAdapter { requireContext() }
     private val searchHintsAdapter: SearchHintsAdapter =
-        SearchHintsAdapter({ viewModel.onSearchItemClicked(it) }) { requireContext() }
+        SearchHintsAdapter({ requireContext() }) { onSearchHintClicked(it) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        currentLayoutState = LayoutState.DEFAULT
 
         with(viewModel) {
             searchHintsLiveData.observe(this@SessionCreateFragment, ::setSearchHints)
-            searchHintLiveData.observe(this@SessionCreateFragment, ::applySearchResult)
+            selectedPlaceLiveData.observe(this@SessionCreateFragment, ::applySearchResult)
+            sessionCreatedLiveData.observe(this@SessionCreateFragment, ::onSessionCreation)
+            currentLocationLiveData.observe(this@SessionCreateFragment) {
+                if (mapDelegate.isMapReady)
+                    mapDelegate.setOriginLocation(it)
+            }
         }
     }
 
@@ -54,25 +64,75 @@ class SessionCreateFragment : Fragment(R.layout.fragment_session_create) {
         changeLayoutState(currentLayoutState)
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        mapDelegate.onSaveInstanceState(outState)
+    }
+
     override fun onStart() {
         super.onStart()
-        destEditText.addTextChangedListener(onDestTextChangeListener)
+        mapDelegate.onStart()
         viewModel.startLocationUpdates()
+        destEditText.addTextChangedListener(onDestTextChangeListener)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mapDelegate.onResume()
     }
 
     override fun onStop() {
         destEditText.removeTextChangedListener(onDestTextChangeListener)
         viewModel.stopLocationUpdates()
+        mapDelegate.onStop()
         super.onStop()
     }
 
-    private fun applySearchResult(result: Place) {
+    override fun onPause() {
+        mapDelegate.onPause()
+        super.onPause()
+    }
+
+    override fun onLowMemory() {
+        mapDelegate.onLowMemory()
+        super.onLowMemory()
+    }
+
+    override fun onDestroyView() {
+        mapDelegate.onDestroy()
+        super.onDestroyView()
+    }
+
+    private fun onSessionCreation(isCreated: Boolean) {
+        if (isCreated) {
+            Navigation.findNavController(requireActivity(), R.id.nestedNavHostFragment)
+                .popBackStack()
+        } else {
+            //TODO Show message here
+        }
+    }
+
+    private fun onSearchHintClicked(place: Place) {
+        viewModel.onSearchItemClicked(place)
+    }
+
+    private fun applySearchResult(place: Place) {
         destEditText.apply {
-            setText(result.place)
+            setText(place.name)
             clearFocus()
         }
 
-        changeLayoutState(LayoutState.DEFAULT)
+        val currentLocation = viewModel.currentLocationLiveData.value ?: return
+        if (mapDelegate.isMapReady) {
+            mapDelegate.createRoute(currentLocation, place.location)
+        } else {
+            mapView.getMapAsync {
+                mapDelegate.onMapReady(mapView, it)
+                mapDelegate.createRoute(currentLocation, place.location)
+            }
+        }
+
+        changeLayoutState(LayoutState.PLACE_SELECTED)
     }
 
     private fun onNavigationBtnClicked() {
@@ -87,25 +147,34 @@ class SessionCreateFragment : Fragment(R.layout.fragment_session_create) {
     private fun changeLayoutState(layoutState: LayoutState) {
         currentLayoutState = layoutState
 
-        val targets = if (layoutState == LayoutState.DEFAULT) {
-            toolbar.visibility = View.VISIBLE
-            session_container_default to search_hints_recycler
-        } else {
-            toolbar.visibility = View.GONE
-            search_hints_recycler to session_container_default
+        val revealTarget = when (layoutState) {
+            LayoutState.DEFAULT -> {
+                toolbar.visibility = View.VISIBLE
+                search_history_recycler
+            }
+            LayoutState.PLACE_SEARCHING -> {
+                toolbar.visibility = View.GONE
+                search_hints_recycler
+            }
+            LayoutState.PLACE_SELECTED -> {
+                toolbar.visibility = View.VISIBLE
+                session_container_create
+            }
         }
-        val (revealTarget, hideTarget) = targets
+
+        val hideTarget = container.children.find { it.visibility == View.VISIBLE }
+        if (hideTarget != null) {
+            hideTarget.animate()
+                .withEndAction { hideTarget.visibility = View.GONE }
+                .setDuration(400L)
+                .alpha(0f)
+                .start()
+        }
 
         revealTarget.animate()
             .withStartAction { revealTarget.visibility = View.VISIBLE }
-            .setDuration(250L)
+            .setDuration(400L)
             .alpha(1f)
-            .start()
-
-        hideTarget.animate()
-            .withEndAction { hideTarget.visibility = View.GONE }
-            .setDuration(250L)
-            .alpha(0f)
             .start()
     }
 
@@ -117,8 +186,8 @@ class SessionCreateFragment : Fragment(R.layout.fragment_session_create) {
         }
 
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            val newLayoutState = if (s.isEmpty()) LayoutState.DEFAULT else LayoutState.SEARCH_HINTS
-            if (newLayoutState == LayoutState.SEARCH_HINTS)
+            val newLayoutState = if (s.isEmpty()) LayoutState.DEFAULT else LayoutState.PLACE_SEARCHING
+            if (newLayoutState == LayoutState.PLACE_SEARCHING)
                 viewModel.onSearchUpdated(s.toString())
             if (currentLayoutState != newLayoutState)
                 changeLayoutState(newLayoutState)
@@ -126,6 +195,6 @@ class SessionCreateFragment : Fragment(R.layout.fragment_session_create) {
     }
 
     enum class LayoutState {
-        DEFAULT, SEARCH_HINTS
+        DEFAULT, PLACE_SELECTED, PLACE_SEARCHING
     }
 }

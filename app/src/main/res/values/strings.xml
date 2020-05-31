@@ -58,4 +58,11 @@
     <string name="my_location">My location</string>
     <string name="create_session_title">Create new session</string>
 
+    <!--RegionsFragment-->
+    <string name="region_manager_title">Downloading region</string>
+    <string name="region_manager_text">Progress</string>
+
+    <!--ChartsFragment-->
+    <string name="charts_title">Diagnostics</string>
+
 </resources>

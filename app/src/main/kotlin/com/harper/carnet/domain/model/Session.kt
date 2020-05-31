@@ -6,11 +6,12 @@ import java.util.*
 class Session(
     val id: Int,
     val startTime: Date,
-    val endTime: Date,
+    val endTime: Date?,
+    val isActive: Boolean,
     val startLocation: Location,
     val endLocation: Location,
-    val values: List<Value<*>>,
-    val notifications: List<Notification>
+    val values: List<Value<*>> = emptyList(),
+    val notifications: List<Notification> = emptyList()
 ) {
 
     companion object {
@@ -18,6 +19,7 @@ class Session(
             -1,
             Date(),
             Date(),
+            false,
             Location(LatLng(0.0, 0.0), ""),
             Location(LatLng(0.0, 0.0), ""),
             emptyList(),

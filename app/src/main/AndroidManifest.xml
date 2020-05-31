@@ -16,7 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".ui.MainActivity">
+        <activity
+            android:name=".ui.MainActivity"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
 
@@ -25,5 +27,6 @@
             </intent-filter>
         </activity>
 
+        <service android:name=".ui.settings.regions.service.RegionLoadingService" />
     </application>
 </manifest>

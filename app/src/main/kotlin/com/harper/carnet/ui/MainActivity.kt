@@ -2,12 +2,11 @@ package com.harper.carnet.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.harper.carnet.R
 import com.harper.carnet.data.storage.AppStorage
-import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
@@ -22,5 +21,15 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         if (appStorage.isIntroScreenShown()) {
             navController.navigate(R.id.mainFragment)
         } else navController.navigate(R.id.introFragment)
+    }
+
+    override fun onBackPressed() {
+        val currentFragment = supportFragmentManager.fragments.find { it.isVisible }
+        if (currentFragment != null) {
+            val navController = currentFragment.findNavController()
+            if (navController.popBackStack()) return
+        }
+
+        super.onBackPressed()
     }
 }

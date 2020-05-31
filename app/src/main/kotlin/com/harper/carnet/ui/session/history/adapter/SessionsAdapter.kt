@@ -23,6 +23,7 @@ import com.mapbox.mapboxsdk.snapshotter.MapSnapshotter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.include_session_values.*
 import kotlinx.android.synthetic.main.item_session_history.*
+import timber.log.Timber
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -90,7 +91,7 @@ class SessionsAdapter(private val contextProvider: () -> Context) :
                 .withLogo(false)
 
             MapSnapshotter(context, options)
-                .start { imageView.setImageBitmap(it.bitmap) }
+                .start({ imageView.setImageBitmap(it.bitmap) }, { Timber.e(it) })
         }
 
         private fun bindValues(values: List<Value<*>>) {

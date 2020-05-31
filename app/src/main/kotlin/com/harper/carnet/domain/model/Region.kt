@@ -1,5 +1,7 @@
 package com.harper.carnet.domain.model
 
+import java.io.Serializable
+
 class Region(
     val id: Long,
     val code: String,
@@ -10,4 +12,4 @@ class Region(
     val south: Double,
     val east: Double,
     val west: Double
-)
+) : Serializable

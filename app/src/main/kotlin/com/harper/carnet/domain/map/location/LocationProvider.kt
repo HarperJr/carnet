@@ -1,23 +1,20 @@
 package com.harper.carnet.domain.map.location
 
 import android.content.Context
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
 import com.harper.carnet.domain.model.LatLng
+import com.mapbox.android.core.location.LocationEngineCallback
+import com.mapbox.android.core.location.LocationEngineProvider
+import com.mapbox.android.core.location.LocationEngineRequest
+import com.mapbox.android.core.location.LocationEngineResult
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-class LocationProvider(context: Context) {
-    private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+
+class LocationProvider(private val context: Context) {
+    private val locationEngine = LocationEngineProvider.getBestLocationEngine(context)
     private val updatesSubj: PublishSubject<LatLng> = PublishSubject.create()
-    private val locationRequest = LocationRequest().apply {
-        interval = TimeUnit.SECONDS.toMillis(20)
-        maxWaitTime = TimeUnit.SECONDS.toMillis(60)
-        fastestInterval = TimeUnit.SECONDS.toMillis(10)
-    }
     private var requestingUpdates = false
 
     @Throws(SecurityException::class)
@@ -25,31 +22,36 @@ class LocationProvider(context: Context) {
         if (requestingUpdates) return
         requestingUpdates = true
 
-        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
-        fusedLocationClient.lastLocation
-            .addOnCompleteListener {
-                val lastLocation = it.result
-                if (lastLocation != null)
-                    updatesSubj.onNext(LatLng(lastLocation.latitude, lastLocation.longitude))
-            }
+        val request = LocationEngineRequest.Builder(TimeUnit.SECONDS.toMillis(2))
+            .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
+            .setMaxWaitTime(TimeUnit.SECONDS.toMillis(10)).build()
+
+        locationEngine.requestLocationUpdates(request, locationCallback, context.mainLooper)
+        locationEngine.getLastLocation(locationCallback)
     }
 
     fun stopRequesting() {
         if (!requestingUpdates) return
         requestingUpdates = false
 
-        fusedLocationClient
+        locationEngine
             .removeLocationUpdates(locationCallback)
     }
 
     fun updates(): Observable<LatLng> = updatesSubj
 
-    private val locationCallback = object : LocationCallback() {
-        override fun onLocationResult(locationResult: LocationResult?) {
-            if (locationResult != null) {
-                val lastLocation = locationResult.lastLocation
-                updatesSubj.onNext(LatLng(lastLocation.latitude, lastLocation.longitude))
+    private val locationCallback = object : LocationEngineCallback<LocationEngineResult> {
+
+        override fun onSuccess(result: LocationEngineResult?) {
+            if (result != null) {
+                result.lastLocation?.also {
+                    updatesSubj.onNext(LatLng(it.latitude, it.longitude))
+                }
             }
+        }
+
+        override fun onFailure(exception: Exception) {
+            Timber.e(exception)
         }
     }
 }
