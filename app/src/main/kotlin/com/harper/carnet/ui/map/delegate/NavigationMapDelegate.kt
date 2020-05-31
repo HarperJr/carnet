@@ -75,10 +75,8 @@ class NavigationMapDelegate(contextProvider: () -> Context) : MapDelegate(contex
         if (wasInTunnel && !isInTunnel)
             wasInTunnel = false
 
-        if (isTracking) {
+        if (isTracking)
             routeRefresh.refresh(routeProgress, refreshCallback)
-            setOriginLocation(LatLng(location.latitude, location.longitude))
-        }
     }
 
     fun createRoute(origin: LatLng, dest: LatLng) {

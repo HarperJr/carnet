@@ -24,10 +24,11 @@ import timber.log.Timber
  * Created by HarperJr on 15:15
  **/
 class RegionLoadingService : Service() {
+    val loadProgressSubject = PublishSubject.create<RegionLoadProgress>()
+
     private val binder: Binder = RegionLoadingBinder()
-    private val loadProgressSubject = PublishSubject.create<Int>()
     private var regionsLoaderDisposable = Disposables.disposed()
-    private var regionsLoader: RegionsLoader? = null
+    private lateinit var regionsLoader: RegionsLoader
 
     override fun onCreate() {
         super.onCreate()
@@ -41,7 +42,7 @@ class RegionLoadingService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         showNotification()
         startRegionLoading(intent.getSerializableExtra(REGION_EXTRA).cast())
-        return START_STICKY
+        return START_NOT_STICKY
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
@@ -56,11 +57,13 @@ class RegionLoadingService : Service() {
 
     private fun showNotification() {
         createNotificationChannel()
+
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setOngoing(true)
+            .setWhen(System.currentTimeMillis())
+            .setSmallIcon(R.drawable.ic_arrow_down_collapse)
             .setContentTitle(applicationContext.getString(R.string.region_manager_title))
             .setContentText(applicationContext.getString(R.string.region_manager_text))
-            .setWhen(System.currentTimeMillis())
             .build()
 
         startForeground(NOTIFICATION_ID, notification)
@@ -73,13 +76,13 @@ class RegionLoadingService : Service() {
                 "Foreground Service Channel",
                 NotificationManager.IMPORTANCE_HIGH
             )
-            val manager = getSystemService(NotificationManager::class.java)
-            manager.createNotificationChannel(serviceChannel)
+            val notificationManager = getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(serviceChannel)
         }
     }
 
     private fun startRegionLoading(region: Region) {
-        regionsLoader?.let { regLoader ->
+        regionsLoader.let { regLoader ->
             regionsLoaderDisposable = Observable.create<Unit> { sub ->
                 regLoader.isRegionLoaded(region) { isLoaded ->
                     if (!isLoaded) {
@@ -92,24 +95,28 @@ class RegionLoadingService : Service() {
                 .flatMap { regLoader.downloadProgress() }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doAfterTerminate { stopSelf() }
                 .subscribe({
                     Timber.d("Region $region download progress: $it")
-                    this.loadProgressSubject.onNext(it)
+                    this.loadProgressSubject.onNext(RegionLoadProgress(region, it))
                 }, {
                     Timber.e("Region $region download error $it")
                     this.loadProgressSubject.onError(it)
+                }, {
+                    Timber.e("Region $region is downloaded")
+                    this.loadProgressSubject.onComplete()
                 })
         }
     }
 
     inner class RegionLoadingBinder : Binder() {
 
-        fun getService(): Service = this@RegionLoadingService
+        fun getService(): RegionLoadingService = this@RegionLoadingService
     }
 
     companion object {
         const val REGION_EXTRA = "REGION_EXTRA"
-        private const val CHANNEL_ID = "NOTIFICATION_CHANNEL"
+        private const val CHANNEL_ID = "REGION_LOADING_SERVICE_NOTIFICATION_CHANNEL_ID"
         private const val NOTIFICATION_ID = 0x1240
     }
 }

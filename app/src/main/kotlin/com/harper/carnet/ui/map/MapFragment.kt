@@ -29,12 +29,12 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         mapDelegate.onMapReadyListener = viewModel::onMapReady
         mapDelegate.onMapMoveListener = viewModel::onMapMoved
         with(viewModel) {
-            locationsLiveData.observe(this@MapFragment) {
-                if (!mapDelegate.isRoutingRunning)
-                    mapDelegate.createRoute(it, LatLng(56.139670, 40.397905))
-                mapDelegate.setOriginLocation(it)
-            }
+            locationsLiveData.observe(this@MapFragment) { mapDelegate.setOriginLocation(it) }
             originBtnActiveStateLiveData.observe(this@MapFragment, ::setTrackingState)
+            activeSessionLiveData.observe(this@MapFragment) {
+                if (!mapDelegate.isRoutingRunning)
+                    mapDelegate.createRoute(it.startLocation.latLng, it.endLocation.latLng)
+            }
         }
     }
 

@@ -25,7 +25,7 @@ object UiModule {
 
             scope<MapFragment> {
                 viewModel {
-                    MapViewModel(get())
+                    MapViewModel(get(), get())
                 }
             }
 

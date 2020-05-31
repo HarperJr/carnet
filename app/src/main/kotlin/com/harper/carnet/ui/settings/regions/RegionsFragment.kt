@@ -14,6 +14,7 @@ import com.harper.carnet.R
 import com.harper.carnet.domain.model.Region
 import com.harper.carnet.ext.observe
 import com.harper.carnet.ui.settings.regions.adapter.RegionsAdapter
+import com.harper.carnet.ui.settings.regions.service.RegionLoadProgress
 import com.harper.carnet.ui.settings.regions.service.RegionLoadingService
 import kotlinx.android.synthetic.main.fragment_regions.*
 import org.koin.android.scope.currentScope
@@ -28,6 +29,7 @@ class RegionsFragment : Fragment(R.layout.fragment_regions) {
 
         with(viewModel) {
             regionsLiveDate.observe(this@RegionsFragment, ::setRegions)
+            progressLiveData.observe(this@RegionsFragment) { adapter.setRegionLoadProgress(it.region, it.value) }
         }
 
         setHasOptionsMenu(true)
@@ -49,6 +51,16 @@ class RegionsFragment : Fragment(R.layout.fragment_regions) {
             addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
             adapter = this@RegionsFragment.adapter
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        bindRegionLoadingService()
+    }
+
+    override fun onStop() {
+        unbindRegionLoadingService()
+        super.onStop()
     }
 
     private fun setRegions(regions: List<Region>) {
@@ -75,5 +87,9 @@ class RegionsFragment : Fragment(R.layout.fragment_regions) {
             viewModel.getServiceConnection(),
             Context.BIND_AUTO_CREATE
         )
+    }
+
+    private fun unbindRegionLoadingService() {
+        requireActivity().unbindService(viewModel.getServiceConnection())
     }
 }
