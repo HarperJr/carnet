@@ -7,6 +7,7 @@ import com.harper.carnet.data.api.entity.body.TelematicsBody
 import com.harper.carnet.data.api.entity.response.ErrorRes
 import com.harper.carnet.data.gson.GSON.gson
 import com.harper.carnet.domain.model.Telematics
+import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.Response
 
@@ -19,11 +20,11 @@ interface ApiService {
 
     fun authDevice(identity: String): Single<String>
 
-    fun publishNotification(message: String, lat: Double, lng: Double): Single<Unit>
+    fun publishNotification(message: String, type: String, lat: Double, lng: Double): Completable
 
-    fun subscribeNotifications(token: String): Single<Unit>
+    fun subscribeNotifications(token: String): Completable
 
-    fun sendTelematics(lat: Double, lng: Double, speed: Double, rot: Double): Single<Unit>
+    fun sendTelematics(lat: Double, lng: Double, speed: Double, rot: Double): Completable
 
     fun getTelematics(): Single<List<Telematics>>
 }
@@ -40,16 +41,19 @@ class ApiExecutor(private val api: Api) : ApiService {
             .map { it.token }
     }
 
-    override fun publishNotification(message: String, lat: Double, lng: Double): Single<Unit> {
-        return execute { publishNotification(NotificationBody(message, lat, lng)) }
+    override fun publishNotification(message: String, type: String, lat: Double, lng: Double): Completable {
+        return execute { publishNotification(NotificationBody(message, type, lat, lng)) }
+            .ignoreElement()
     }
 
-    override fun subscribeNotifications(token: String): Single<Unit> {
+    override fun subscribeNotifications(token: String): Completable {
         return execute { subscribeNotifications(PushTokenBody(token)) }
+            .ignoreElement()
     }
 
-    override fun sendTelematics(lat: Double, lng: Double, speed: Double, rot: Double): Single<Unit> {
+    override fun sendTelematics(lat: Double, lng: Double, speed: Double, rot: Double): Completable {
         return execute { sendTelematics(TelematicsBody(lat, lng, speed, rot)) }
+            .ignoreElement()
     }
 
     override fun getTelematics(): Single<List<Telematics>> {

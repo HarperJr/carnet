@@ -3,6 +3,7 @@ package com.harper.carnet.di
 import com.harper.carnet.domain.diagnostics.ConnectionProvider
 import com.harper.carnet.domain.diagnostics.ValuesProvider
 import com.harper.carnet.domain.diagnostics.WarningsProvider
+import com.harper.carnet.domain.map.NotificationSender
 import com.harper.carnet.domain.map.location.LocationProvider
 import com.harper.carnet.domain.map.regions.RegionsProvider
 import com.harper.carnet.domain.session.SessionManager
@@ -45,6 +46,10 @@ object DomainModule {
 
             factory {
                 TelematicsProvider(get(), get())
+            }
+
+            factory {
+                NotificationSender(get())
             }
         }
     }

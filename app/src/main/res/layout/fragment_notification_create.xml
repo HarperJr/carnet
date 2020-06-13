@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary">
+
+    <ImageView
+        android:id="@+id/notificationAmbulance"
+        style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_ambulance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/notificationCollapse"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/notificationCollapse"
+        style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:src="@drawable/ic_collapse"
+        app:layout_constraintEnd_toStartOf="@+id/notificationAmbulance"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/notificationSupport"
+        app:layout_constraintTop_toTopOf="@id/notificationAmbulance" />
+
+    <ImageView
+        android:id="@+id/notificationSupport"
+        style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:src="@drawable/ic_support"
+        app:layout_constraintEnd_toStartOf="@+id/notificationCollapse"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/notificationMessage"
+        app:layout_constraintTop_toTopOf="@id/notificationCollapse" />
+
+    <ImageView
+        android:id="@+id/notificationMessage"
+        style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:src="@drawable/ic_message"
+        app:layout_constraintEnd_toStartOf="@+id/notificationSupport"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/notificationSupport" />
+
+    <TextView
+        android:id="@+id/notificationLabel"
+        style="@style/AppTheme.Text.Head1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notificationAmbulance"
+        tools:text="Collapse" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/notificationInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/notifying_comment"
+        android:textColorHint="@color/colorText"
+        app:layout_constraintEnd_toEndOf="@+id/notificationAmbulance"
+        app:layout_constraintStart_toStartOf="@+id/notificationMessage"
+        app:layout_constraintTop_toBottomOf="@+id/notificationLabel">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/notificationInput"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnNotificationSend"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/notifying_accept_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/notificationInputLayout"
+        app:layout_constraintStart_toStartOf="@+id/notificationInputLayout"
+        app:layout_constraintTop_toBottomOf="@+id/notificationInputLayout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

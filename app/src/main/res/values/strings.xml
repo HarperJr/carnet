@@ -85,4 +85,12 @@
     <string name="connected">Connected</string>
     <string name="disconnected">Disconnected</string>
 
+    <!--NotificationBottomSheet-->
+    <string name="notifying_accept_btn">Send notification</string>
+    <string name="notifying_comment">Add your comment (optional)</string>
+    <string name="notification_ambulance">Ambulance</string>
+    <string name="notification_collapse">Collapse</string>
+    <string name="notification_support">Support</string>
+    <string name="notification_message">Message</string>
+
 </resources>

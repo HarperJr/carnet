@@ -19,6 +19,7 @@ object NotificationsHandler {
         return when (type) {
             NotificationType.TRAFFIC_CONGESTION -> context.getString(R.string.notif_traffic_congestion)
             NotificationType.DANGEROUS_MANEUVER -> context.getString(R.string.notif_dangerous_maneuver)
+            else -> ""
         }
     }
 }

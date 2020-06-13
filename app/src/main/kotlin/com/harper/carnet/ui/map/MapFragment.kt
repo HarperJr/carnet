@@ -3,11 +3,14 @@ package com.harper.carnet.ui.map
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.NonNull
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.harper.carnet.R
 import com.harper.carnet.data.gson.GSON.gson
 import com.harper.carnet.domain.model.Session
 import com.harper.carnet.domain.model.Telematics
+import com.harper.carnet.ext.cast
 import com.harper.carnet.ext.observe
 import com.harper.carnet.ui.map.delegate.MapDelegate
 import com.harper.carnet.ui.map.delegate.NavigationMapDelegate
@@ -25,6 +28,11 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     private val mapDelegate: NavigationMapDelegate = MapDelegate { requireContext() }.withNavigation()
     private val permissionsDelegate: PermissionsDelegate =
         PermissionsDelegate(this, 4084, Permission.COARSE_LOCATION, Permission.FINE_LOCATION)
+    private val bottomSheetBehavior by lazy {
+        notificationBottomSheet.layoutParams
+            .cast<CoordinatorLayout.LayoutParams>().behavior!!.cast<BottomSheetBehavior<*>>()
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +53,8 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         mapDelegate.onCreate(savedInstanceState)
+
+        bottomSheetBehavior.isHideable = true
 
         permissionsDelegate.onPermissionsListener = onPermissionsListener
         btnOrigin.setOnClickListener { viewModel.onUserOriginBtnClicked() }
@@ -94,7 +104,11 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     }
 
     private fun onNewNotificationBtnClicked() {
-        //TODO done this
+        setNotificationBottomSheetState(BottomSheetBehavior.STATE_EXPANDED)
+    }
+
+    private fun setNotificationBottomSheetState(state: Int) {
+        bottomSheetBehavior.state = state
     }
 
     private fun setTelematics(telematics: List<Telematics>) {

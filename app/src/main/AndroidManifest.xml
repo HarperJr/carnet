@@ -18,7 +18,7 @@
 
         <activity
             android:name=".ui.MainActivity"
-            android:windowSoftInputMode="adjustNothing">
+            android:windowSoftInputMode="adjustPan|adjustResize">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
 

@@ -4,6 +4,8 @@ import com.harper.carnet.ui.diagnostics.DiagnosticsFragment
 import com.harper.carnet.ui.diagnostics.DiagnosticsViewModel
 import com.harper.carnet.ui.map.MapFragment
 import com.harper.carnet.ui.map.MapViewModel
+import com.harper.carnet.ui.map.notification.NotificationCreateFragment
+import com.harper.carnet.ui.map.notification.NotificationCreateViewModel
 import com.harper.carnet.ui.session.SessionsFragment
 import com.harper.carnet.ui.session.SessionsViewModel
 import com.harper.carnet.ui.session.create.SessionCreateFragment
@@ -56,6 +58,11 @@ object UiModule {
                 }
             }
 
+            scope<NotificationCreateFragment> {
+                viewModel {
+                    NotificationCreateViewModel(get(), get())
+                }
+            }
         }
     }
 }

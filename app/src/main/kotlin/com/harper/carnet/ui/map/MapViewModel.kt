@@ -3,8 +3,10 @@ package com.harper.carnet.ui.map
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.harper.carnet.domain.map.NotificationSender
 import com.harper.carnet.domain.map.location.LocationProvider
 import com.harper.carnet.domain.model.LatLng
+import com.harper.carnet.domain.model.NotificationType
 import com.harper.carnet.domain.model.Session
 import com.harper.carnet.domain.model.Telematics
 import com.harper.carnet.domain.session.SessionProvider
@@ -19,8 +21,9 @@ class MapViewModel(
     val locationsLiveData: LiveData<LatLng> = rxLiveData { locationProvider.updates() }
     val activeSessionLiveData: LiveData<Session> = rxLiveData { sessionProvider.provideActiveSession() }
     val telematicsLiveData: LiveData<List<Telematics>> = rxLiveData { telematicsProvider.provideTelematics() }
-
     val originBtnActiveStateLiveData: MutableLiveData<Boolean> = MutableLiveData(false)
+
+    private var notificationType: NotificationType? = null
 
     fun onMapReady() {
         observeLocationUpdates()
