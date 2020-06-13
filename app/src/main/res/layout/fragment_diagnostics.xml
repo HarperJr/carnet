@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_chart">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/date"
+                style="@style/AppTheme.Text.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAllCaps="true"
+                tools:text="FRI 7 MAY 2020" />
+
+            <TextView
+                android:id="@+id/time"
+                style="@style/AppTheme.Text.Subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="14:20" />
+
+        </LinearLayout>
+
+        <include
+            android:id="@+id/menuItemConnection"
+            layout="@layout/include_item_connection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="8dp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/carContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <ImageView
+            android:id="@+id/carWarningIcon"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_round_alert"
+            android:tint="@color/colorAccent"
+            app:layout_constraintEnd_toStartOf="@id/carView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/carWarningText"
+            style="@style/AppTheme.Text.Head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/warning_check"
+            app:layout_constraintEnd_toEndOf="@id/carWarningIcon"
+            app:layout_constraintStart_toStartOf="@id/carWarningIcon"
+            app:layout_constraintTop_toBottomOf="@id/carWarningIcon" />
+
+        <ImageView
+            android:id="@+id/carView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_transport"
+            android:tint="@color/colorPrimaryLight"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/lastConnection"
+            style="@style/AppTheme.Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:gravity="center"
+            android:text="@string/last_connection"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/carView" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnConfigureConnection"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/configure_connection"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/carView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/valuesContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@id/carContainer">
+
+        <ImageView
+            android:id="@+id/icAccumulator"
+            style="@style/AppTheme.ActiveIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/ic_accumulator"
+            app:layout_constraintEnd_toStartOf="@+id/icEngine"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/valueAccumulator"
+            style="@style/AppTheme.Text.Head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/icAccumulator"
+            app:layout_constraintStart_toStartOf="@id/icAccumulator"
+            app:layout_constraintTop_toBottomOf="@id/icAccumulator"
+            tools:text="20%" />
+
+        <ImageView
+            android:id="@+id/icEngine"
+            style="@style/AppTheme.ActiveIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_engine"
+            app:layout_constraintEnd_toStartOf="@+id/icTime"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/icAccumulator"
+            app:layout_constraintTop_toTopOf="@+id/icAccumulator" />
+
+        <TextView
+            android:id="@+id/valueEngine"
+            style="@style/AppTheme.Text.Head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/icEngine"
+            app:layout_constraintStart_toStartOf="@id/icEngine"
+            app:layout_constraintTop_toBottomOf="@id/icEngine"
+            tools:text="36*" />
+
+        <ImageView
+            android:id="@+id/icTime"
+            style="@style/AppTheme.ActiveIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_time"
+            app:layout_constraintEnd_toStartOf="@+id/icSpeed"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/icEngine"
+            app:layout_constraintTop_toTopOf="@+id/icEngine" />
+
+
+        <TextView
+            android:id="@+id/valueTime"
+            style="@style/AppTheme.Text.Head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/icTime"
+            app:layout_constraintStart_toStartOf="@id/icTime"
+            app:layout_constraintTop_toBottomOf="@id/icTime"
+            tools:text="122h" />
+
+        <ImageView
+            android:id="@+id/icSpeed"
+            style="@style/AppTheme.ActiveIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_speedometer"
+            app:layout_constraintEnd_toStartOf="@+id/icFuel"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/icTime"
+            app:layout_constraintTop_toTopOf="@+id/icTime" />
+
+        <TextView
+            android:id="@+id/valueSpeed"
+            style="@style/AppTheme.Text.Head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/icSpeed"
+            app:layout_constraintStart_toStartOf="@id/icSpeed"
+            app:layout_constraintTop_toBottomOf="@id/icSpeed"
+            tools:text="64" />
+
+        <ImageView
+            android:id="@+id/icFuel"
+            style="@style/AppTheme.ActiveIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:src="@drawable/ic_fuel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/icSpeed"
+            app:layout_constraintTop_toTopOf="@+id/icSpeed" />
+
+        <TextView
+            android:id="@+id/valueFuel"
+            style="@style/AppTheme.Text.Head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/icFuel"
+            app:layout_constraintStart_toStartOf="@id/icFuel"
+            app:layout_constraintTop_toBottomOf="@id/icFuel"
+            tools:text="30%" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/warningsRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="2dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/valuesContainer"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_warning" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

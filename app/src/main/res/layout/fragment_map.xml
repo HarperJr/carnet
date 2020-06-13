@@ -25,13 +25,13 @@
             android:tint="@color/colorAccent"
             app:borderWidth="0dp"
             app:fabCustomSize="42dp"
-            app:layout_anchor="@id/btnNewSession"
-            app:layout_constraintBottom_toTopOf="@id/btnNewSession"
-            app:layout_constraintEnd_toEndOf="@id/btnNewSession"
-            app:layout_constraintStart_toStartOf="@id/btnNewSession" />
+            app:layout_anchor="@id/btnNewNotification"
+            app:layout_constraintBottom_toTopOf="@id/btnNewNotification"
+            app:layout_constraintEnd_toEndOf="@id/btnNewNotification"
+            app:layout_constraintStart_toStartOf="@id/btnNewNotification" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btnNewSession"
+            android:id="@+id/btnNewNotification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.harper.carnet.R
 import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item_intro_page.*
 
 class IntroAdapter(context: Context, private val items: List<IntroViewItem>) :
     RecyclerView.Adapter<IntroAdapter.ViewHolder>() {
@@ -26,7 +27,8 @@ class IntroAdapter(context: Context, private val items: List<IntroViewItem>) :
 
     inner class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
         fun bind(item: IntroViewItem) {
-
+            intro_title.setText(item.titleRes)
+            intro_text.setText(item.textRes)
         }
     }
 }

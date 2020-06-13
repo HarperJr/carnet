@@ -1,5 +1,5 @@
 package com.harper.carnet.ui.intro.adapter
 
-class IntroViewItem {
+import androidx.annotation.StringRes
 
-}
+class IntroViewItem(@StringRes val titleRes: Int, @StringRes val textRes: Int)

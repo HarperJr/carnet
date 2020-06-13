@@ -18,15 +18,15 @@
 
         <fragment
             android:id="@+id/chartsFragment"
-            android:name="com.harper.carnet.ui.car.charts.ChartsFragment"
+            android:name="com.harper.carnet.ui.diagnostics.charts.ChartsFragment"
             android:label="ChartsFragment"
             tools:layout="@layout/fragment_charts" />
 
         <fragment
             android:id="@+id/carFragment"
-            android:name="com.harper.carnet.ui.car.CarFragment"
+            android:name="com.harper.carnet.ui.diagnostics.DiagnosticsFragment"
             android:label="CarFragment"
-            tools:layout="@layout/fragment_car">
+            tools:layout="@layout/fragment_diagnostics">
             <action
                 android:id="@+id/action_carFragment_to_chartsFragment"
                 app:destination="@id/chartsFragment" />
@@ -40,7 +40,7 @@
         app:startDestination="@id/sessionsFragment">
         <fragment
             android:id="@+id/sessionsDetailFragment"
-            android:name="com.harper.carnet.ui.session.detail.SessionsDetailFragment"
+            android:name="com.harper.carnet.ui.session.detail.SessionDetailFragment"
             android:label="SessionsDetailFragment"
             tools:layout="@layout/fragment_session_detail" />
         <fragment
@@ -61,6 +61,7 @@
             android:label="SessionCreateFragment"
             tools:layout="@layout/fragment_session_create" />
     </navigation>
+
     <navigation
         android:id="@+id/settingsNavigation"
         android:label="SettignsGraph"
@@ -78,7 +79,15 @@
             <action
                 android:id="@+id/action_settingsFragment_to_regionsFragment"
                 app:destination="@id/regionsFragment" />
+            <action
+                android:id="@+id/action_settingsFragment_to_connectionFragment"
+                app:destination="@id/connectionFragment" />
         </fragment>
+        <fragment
+            android:id="@+id/connectionFragment"
+            android:name="com.harper.carnet.ui.settings.connection.ConnectionSettingsFragment"
+            android:label="ConnectionFragment"
+            tools:layout="@layout/fragment_connection_settings" />
     </navigation>
 
 </navigation>

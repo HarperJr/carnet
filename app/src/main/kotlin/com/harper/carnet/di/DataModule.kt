@@ -4,7 +4,9 @@ import androidx.room.Room
 import com.harper.carnet.data.database.Database
 import com.harper.carnet.data.repository.SessionRepository
 import com.harper.carnet.data.storage.AppStorage
+import com.harper.carnet.data.storage.SettingsStorage
 import com.harper.carnet.data.storage.SharedStorage
+import com.harper.carnet.data.diagnostics.client.DiagnosticsClient
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -19,6 +21,14 @@ object DataModule {
 
             single {
                 AppStorage(get())
+            }
+
+            single {
+                SettingsStorage(get())
+            }
+
+            single {
+                DiagnosticsClient(get())
             }
 
             single {

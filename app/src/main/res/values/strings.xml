@@ -10,9 +10,11 @@
     <!--MenuCar-->
     <string name="menu_car_item_connection_status">Connection</string>
 
-    <!--CarFragment-->
-    <string name="car_last_connection">Last active connection on 07.05.20 14:14</string>
+    <!--DiagnosticsFragment-->
+    <string name="last_connection">Last active connection on %s</string>
     <string name="warning_check">Check</string>
+    <string name="connection_status_active">Active</string>
+    <string name="connection_status_inactive">Inactive</string>
 
     <!--SettingsFragment-->
     <string name="offline_map_settings_title">Offline map</string>
@@ -64,5 +66,23 @@
 
     <!--ChartsFragment-->
     <string name="charts_title">Diagnostics</string>
+
+    <!--IntroFragment-->
+    <string name="intro_first_title">Welcome to the carnet app</string>
+    <string name="intro_first_text">This app makes your car to be a service\n Please allow all required permissions for this app to let it work properly</string>
+
+    <string name="intro_second_title">You need OBD-II device</string>
+    <string name="intro_second_text">Please make sure you connected to your OBD-II adapter, you can do it any time after</string>
+
+    <string name="intro_third_title">You are ready</string>
+    <string name="intro_third_text">Now you can use this app as a monitoring tool and observe others on the map.</string>
+    <string name="configure_connection">Configure connection</string>
+
+    <!--ConnectionSettingsFragment-->
+    <string name="device_identity_hint">Device identity</string>
+    <string name="connect">Connect</string>
+    <string name="connection_tutorial">Please check your device identity code on the side of adapter device</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
 
 </resources>

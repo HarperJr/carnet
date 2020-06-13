@@ -61,6 +61,10 @@ class IntroFragment : Fragment(R.layout.fragment_intro) {
 
     companion object {
         private const val STATE_PAGE_POS = "STATE_PAGE_POS"
-        private val ITEMS = listOf<IntroViewItem>()
+        private val ITEMS = listOf(
+            IntroViewItem(R.string.intro_first_title, R.string.intro_first_text),
+            IntroViewItem(R.string.intro_second_title, R.string.intro_second_text),
+            IntroViewItem(R.string.intro_third_title, R.string.intro_third_text)
+        )
     }
 }

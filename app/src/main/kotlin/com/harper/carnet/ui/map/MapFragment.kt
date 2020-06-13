@@ -5,7 +5,9 @@ import android.view.View
 import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
 import com.harper.carnet.R
-import com.harper.carnet.domain.model.LatLng
+import com.harper.carnet.data.gson.GSON.gson
+import com.harper.carnet.domain.model.Session
+import com.harper.carnet.domain.model.Telematics
 import com.harper.carnet.ext.observe
 import com.harper.carnet.ui.map.delegate.MapDelegate
 import com.harper.carnet.ui.map.delegate.NavigationMapDelegate
@@ -15,6 +17,7 @@ import com.harper.carnet.ui.support.perms.PermissionsDelegate
 import kotlinx.android.synthetic.main.fragment_map.*
 import org.koin.android.scope.currentScope
 import org.koin.android.viewmodel.scope.viewModel
+import timber.log.Timber
 
 
 class MapFragment : Fragment(R.layout.fragment_map) {
@@ -31,7 +34,9 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         with(viewModel) {
             locationsLiveData.observe(this@MapFragment) { mapDelegate.setOriginLocation(it) }
             originBtnActiveStateLiveData.observe(this@MapFragment, ::setTrackingState)
+            telematicsLiveData.observe(this@MapFragment, ::setTelematics)
             activeSessionLiveData.observe(this@MapFragment) {
+                if (it == Session.EMPTY) return@observe
                 if (!mapDelegate.isRoutingRunning)
                     mapDelegate.createRoute(it.startLocation.latLng, it.endLocation.latLng)
             }
@@ -43,7 +48,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
         permissionsDelegate.onPermissionsListener = onPermissionsListener
         btnOrigin.setOnClickListener { viewModel.onUserOriginBtnClicked() }
-        btnNewSession.setOnClickListener { onSessionBtnClicked() }
+        btnNewNotification.setOnClickListener { onNewNotificationBtnClicked() }
     }
 
     override fun onSaveInstanceState(@NonNull outState: Bundle) {
@@ -88,8 +93,12 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         permissionsDelegate.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    private fun onSessionBtnClicked() {
+    private fun onNewNotificationBtnClicked() {
+        //TODO done this
+    }
 
+    private fun setTelematics(telematics: List<Telematics>) {
+        Timber.d(gson.toJson(telematics))
     }
 
     private fun prepareMap() {
