@@ -17,21 +17,21 @@ import retrofit2.http.POST
  **/
 interface Api {
 
-    @POST("/reg_device")
+    @POST("reg_device")
     fun regDevice(@Body deviceBody: DeviceBody): Single<Response<JwtTokenRes>>
 
-    @POST("/auth_device")
+    @POST("auth_device")
     fun authDevice(@Body deviceBody: DeviceBody): Single<Response<JwtTokenRes>>
 
-    @POST("/publish_notification")
+    @POST("publish_notification")
     fun publishNotification(@Body notificationBody: NotificationBody): Single<Response<Unit>>
 
-    @POST("/subscribe_notifications")
+    @POST("subscribe_notifications")
     fun subscribeNotifications(@Body pushTokenBody: PushTokenBody): Single<Response<Unit>>
 
-    @POST("/send_telematics")
+    @POST("send_telematics")
     fun sendTelematics(@Body telematicsBody: TelematicsBody): Single<Response<Unit>>
 
-    @GET("/get_telematics")
+    @GET("get_telematics")
     fun getTelematics(): Single<Response<List<TelematicsRes>>>
 }

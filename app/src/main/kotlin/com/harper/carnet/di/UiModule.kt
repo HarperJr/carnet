@@ -1,5 +1,7 @@
 package com.harper.carnet.di
 
+import com.harper.carnet.ui.MainActivity
+import com.harper.carnet.ui.MainViewModel
 import com.harper.carnet.ui.diagnostics.DiagnosticsFragment
 import com.harper.carnet.ui.diagnostics.DiagnosticsViewModel
 import com.harper.carnet.ui.map.MapFragment
@@ -10,6 +12,8 @@ import com.harper.carnet.ui.session.SessionsFragment
 import com.harper.carnet.ui.session.SessionsViewModel
 import com.harper.carnet.ui.session.create.SessionCreateFragment
 import com.harper.carnet.ui.session.create.SessionCreateViewModel
+import com.harper.carnet.ui.settings.SettingsFragment
+import com.harper.carnet.ui.settings.SettingsViewModel
 import com.harper.carnet.ui.settings.connection.ConnectionSettingsFragment
 import com.harper.carnet.ui.settings.connection.ConnectionSettingsViewModel
 import com.harper.carnet.ui.settings.regions.RegionsFragment
@@ -22,6 +26,12 @@ object UiModule {
 
     operator fun invoke(): Module {
         return module {
+            scope<MainActivity> {
+                viewModel {
+                    MainViewModel(get(), get())
+                }
+            }
+
             scope<DiagnosticsFragment> {
                 viewModel {
                     DiagnosticsViewModel(get(), get(), get())
@@ -30,7 +40,7 @@ object UiModule {
 
             scope<MapFragment> {
                 viewModel {
-                    MapViewModel(get(), get(), get())
+                    MapViewModel(get(), get(), get(), get(), get())
                 }
             }
 
@@ -48,7 +58,7 @@ object UiModule {
 
             scope<ConnectionSettingsFragment> {
                 viewModel {
-                    ConnectionSettingsViewModel(get())
+                    ConnectionSettingsViewModel(get(), get())
                 }
             }
 
@@ -61,6 +71,12 @@ object UiModule {
             scope<NotificationCreateFragment> {
                 viewModel {
                     NotificationCreateViewModel(get(), get())
+                }
+            }
+
+            scope<SettingsFragment> {
+                viewModel {
+                    SettingsViewModel(get())
                 }
             }
         }

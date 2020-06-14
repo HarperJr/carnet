@@ -7,6 +7,7 @@ import com.harper.carnet.data.api.interceptor.JwtTokenInterceptor
 import com.harper.carnet.data.gson.GSON.gson
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -24,6 +25,8 @@ object ApiModule {
             single {
                 OkHttpClient().newBuilder()
                     .addInterceptor(JwtTokenInterceptor(get()))
+                    .addInterceptor(HttpLoggingInterceptor()
+                        .also { it.level = HttpLoggingInterceptor.Level.BODY })
                     .callTimeout(CALL_TIMEOUT, TimeUnit.MILLISECONDS)
                     .build()
             }

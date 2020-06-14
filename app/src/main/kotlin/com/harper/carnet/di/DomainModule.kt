@@ -1,6 +1,6 @@
 package com.harper.carnet.di
 
-import com.harper.carnet.domain.diagnostics.ConnectionProvider
+import com.harper.carnet.domain.diagnostics.DiagnosticsProvider
 import com.harper.carnet.domain.diagnostics.ValuesProvider
 import com.harper.carnet.domain.diagnostics.WarningsProvider
 import com.harper.carnet.domain.map.NotificationSender
@@ -25,7 +25,7 @@ object DomainModule {
             }
 
             factory {
-                ConnectionProvider(get())
+                DiagnosticsProvider(get(), get())
             }
 
             factory {

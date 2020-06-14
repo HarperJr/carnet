@@ -1,18 +1,33 @@
 package com.harper.carnet.ui.settings.connection
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.harper.carnet.domain.diagnostics.ConnectionProvider
+import com.harper.carnet.data.storage.AppStorage
+import com.harper.carnet.domain.diagnostics.DiagnosticsProvider
+import com.harper.carnet.ext.rxLiveData
+import io.ktor.util.KtorExperimentalAPI
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
+import timber.log.Timber
 
 class ConnectionSettingsViewModel(
-    private val connectionProvider: ConnectionProvider
+    private val diagnosticsProvider: DiagnosticsProvider,
+    private val appStorage: AppStorage
 ) : ViewModel() {
-    val deviceIdentityLiveData: MutableLiveData<String> = MutableLiveData()
-    val connectionErrorLiveData: MutableLiveData<String> = MutableLiveData()
-    val connectionLiveData: MutableLiveData<Boolean> = MutableLiveData()
-    val progressLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val deviceIdentityLiveData: LiveData<String> = rxLiveData {
+        diagnosticsProvider.isConnected().map {
+            appStorage.getDeviceIdentity()
+        }
+    }
+
+    val connectionLiveData: LiveData<Boolean> = rxLiveData {
+        diagnosticsProvider.isConnected()
+    }
+
+    val progressLiveData: MutableLiveData<Boolean> = MutableLiveData(false)
+    val errorLiveData: MutableLiveData<String> = MutableLiveData()
 
     private var connectionDisposable: Disposable = Disposables.disposed()
 
@@ -20,13 +35,17 @@ class ConnectionSettingsViewModel(
         connectionDisposable.dispose()
     }
 
-    fun connect() {
-        connectionDisposable = connectionProvider.provideConnection()
+    @KtorExperimentalAPI
+    fun connect(deviceIdentity: String) {
+        connectionDisposable = diagnosticsProvider.connect(deviceIdentity)
+            .doOnSuccess { appStorage.setDeviceIdentity(it) }
             .doOnSubscribe { progressLiveData.value = true }
-            .subscribe({ deviceIdentity ->
-
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                progressLiveData.value = false
             }, {
-
+                progressLiveData.value = false
+                Timber.e(it)
             })
     }
 }

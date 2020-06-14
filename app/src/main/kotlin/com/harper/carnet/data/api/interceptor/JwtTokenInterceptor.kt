@@ -13,7 +13,7 @@ class JwtTokenInterceptor(private val storage: AppStorage) : Interceptor {
         val requestBuilder = chain.request().newBuilder()
         storage.getJwtToken().also { jwt ->
             if (!JwtTokenHandler.isExpired(jwt)) {
-                requestBuilder.addHeader(HEADER_AUTHORIZATION, jwt)
+                requestBuilder.addHeader(HEADER_AUTHORIZATION, "Bearer $jwt")
             }
         }
 
@@ -33,7 +33,7 @@ class JwtTokenInterceptor(private val storage: AppStorage) : Interceptor {
                 val exp = getClaim(jwt, "exp")?.asDate()
                 if (exp == null) {
                     true
-                } else exp >= Date()
+                } else exp <= Date()
             }
         }
 

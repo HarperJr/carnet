@@ -21,14 +21,14 @@ class ConnectionSettingsFragment : Fragment(R.layout.fragment_connection_setting
 
         with(viewModel) {
             deviceIdentityLiveData.observe(this@ConnectionSettingsFragment) { deviceIdentityInput.setText(it) }
-            connectionErrorLiveData.observe(this@ConnectionSettingsFragment, ::setError)
+            errorLiveData.observe(this@ConnectionSettingsFragment, ::setError)
             connectionLiveData.observe(this@ConnectionSettingsFragment, ::setIsConnected)
             progressLiveData.observe(this@ConnectionSettingsFragment, ::setIsInProgress)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        btnConnect.setOnClickListener { viewModel.connect() }
+        btnConnect.setOnClickListener { viewModel.connect(deviceIdentityInput.text.toString()) }
     }
 
     private fun setError(message: String) {
@@ -42,6 +42,7 @@ class ConnectionSettingsFragment : Fragment(R.layout.fragment_connection_setting
 
     private fun setIsInProgress(isInProgress: Boolean) {
         connectionProgress.visibility = if (isInProgress) View.VISIBLE else View.GONE
-        btnConnect.visibility = if (isInProgress) View.GONE else View.VISIBLE
+        btnConnect.visibility = if (isInProgress) View.INVISIBLE else View.VISIBLE
+        btnConnect.isEnabled = !isInProgress
     }
 }

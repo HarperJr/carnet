@@ -27,6 +27,7 @@ open class MapDelegate(private val contextProvider: () -> Context) {
 
     var onMapReadyListener: (() -> Unit)? = null
     var onMapMoveListener: (() -> Unit)? = null
+    var onMapDestroyedListener: (() -> Unit)? = null
 
     var currentLocation: LatLng = LatLng.ZERO
         private set
@@ -114,6 +115,7 @@ open class MapDelegate(private val contextProvider: () -> Context) {
     }
 
     open fun onDestroy() {
+        onMapDestroyedListener?.invoke()
         mapDrawManager?.flush()
 
         mapView?.onDestroy()
@@ -130,18 +132,6 @@ open class MapDelegate(private val contextProvider: () -> Context) {
         isMapReady = false
     }
 
-    fun zoomIn() {
-        map?.animateCamera(CameraUpdateFactory.zoomIn())
-    }
-
-    fun zoomOut() {
-        map?.animateCamera(CameraUpdateFactory.zoomOut())
-    }
-
-    fun setZoom(zoom: Double) {
-        map?.animateCamera(CameraUpdateFactory.zoomBy(zoom))
-    }
-
     fun setIsTracking(isTracking: Boolean) {
         this.isTracking = isTracking
     }
@@ -152,6 +142,13 @@ open class MapDelegate(private val contextProvider: () -> Context) {
             longitude = currentLocation.lng
             latitude = currentLocation.lat
         })
+
+        if (isTracking)
+            map?.animateCamera(
+                CameraUpdateFactory.newLatLng(
+                    com.mapbox.mapboxsdk.geometry.LatLng(currentLocation.lat, currentLocation.lng)
+                )
+            )
     }
 
     fun setFocusInBounds(start: LatLng, end: LatLng) {

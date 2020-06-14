@@ -38,7 +38,7 @@ class DiagnosticsFragment : Fragment(R.layout.fragment_diagnostics) {
         with(viewModel) {
             valuesLiveData.observe(this@DiagnosticsFragment, ::setValues)
             warningMessageLiveData.observe(this@DiagnosticsFragment, ::setWarnings)
-            connectionStatusLiveData.observe(this@DiagnosticsFragment, ::setIsConnected)
+            connectionLiveData.observe(this@DiagnosticsFragment, ::setIsConnected)
         }
     }
 

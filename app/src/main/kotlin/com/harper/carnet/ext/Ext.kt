@@ -15,7 +15,8 @@ fun <T> rxLiveData(rxFlow: () -> Observable<T>): LiveData<T> = object : LiveData
     private var disposable: Disposable = Disposables.disposed()
 
     override fun onActive() {
-        disposable = rxFlow.invoke().subscribe({ this.value = it }, { Timber.e(it) })
+        disposable = rxFlow.invoke()
+            .subscribe({ this.postValue(it) }, { Timber.e(it) })
     }
 
     override fun onInactive() {

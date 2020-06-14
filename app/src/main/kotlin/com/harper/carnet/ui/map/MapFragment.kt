@@ -32,16 +32,23 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         notificationBottomSheet.layoutParams
             .cast<CoordinatorLayout.LayoutParams>().behavior!!.cast<BottomSheetBehavior<*>>()
     }
+    private var isMapActive: Boolean = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mapDelegate.onMapReadyListener = viewModel::onMapReady
-        mapDelegate.onMapMoveListener = viewModel::onMapMoved
+        mapDelegate.onMapReadyListener = { isMapActive = true }
+        mapDelegate.onMapDestroyedListener = { isMapActive = false }
+        mapDelegate.onMapMoveListener = {
+            mapDelegate.setIsTracking(false)
+            btnOrigin.isActivated = false
+        }
         with(viewModel) {
-            locationsLiveData.observe(this@MapFragment) { mapDelegate.setOriginLocation(it) }
-            originBtnActiveStateLiveData.observe(this@MapFragment, ::setTrackingState)
+            locationsLiveData.observe(this@MapFragment) {
+                if (isMapActive)
+                    mapDelegate.setOriginLocation(it)
+            }
             telematicsLiveData.observe(this@MapFragment, ::setTelematics)
             activeSessionLiveData.observe(this@MapFragment) {
                 if (it == Session.EMPTY) return@observe
@@ -55,9 +62,12 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         mapDelegate.onCreate(savedInstanceState)
 
         bottomSheetBehavior.isHideable = true
-
+        bottomSheetBehavior.isFitToContents = true
         permissionsDelegate.onPermissionsListener = onPermissionsListener
-        btnOrigin.setOnClickListener { viewModel.onUserOriginBtnClicked() }
+        btnOrigin.setOnClickListener {
+            mapDelegate.setIsTracking(true)
+            btnOrigin.isActivated = true
+        }
         btnNewNotification.setOnClickListener { onNewNotificationBtnClicked() }
     }
 
@@ -68,6 +78,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     override fun onStart() {
         super.onStart()
+        viewModel.onStart()
         mapDelegate.onStart()
         permissionsDelegate.requestPermissions()
     }
@@ -121,10 +132,6 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         }
     }
 
-    private fun setTrackingState(isTracking: Boolean) {
-        mapDelegate.setIsTracking(isTracking)
-        btnOrigin.isActivated = isTracking
-    }
 
     private val onPermissionsListener = object : OnPermissionsListener {
         override fun onGrantSuccess(permissions: List<Permission>) {
