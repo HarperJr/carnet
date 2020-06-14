@@ -92,5 +92,8 @@
     <string name="notification_collapse">Collapse</string>
     <string name="notification_support">Support</string>
     <string name="notification_message">Message</string>
+    <string name="telematics_text">Aggregating data</string>
+    <string name="telematics_title">Telematics</string>
+    <string name="diagnostics_stub">-</string>
 
 </resources>

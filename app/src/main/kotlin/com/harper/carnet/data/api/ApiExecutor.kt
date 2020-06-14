@@ -1,22 +1,20 @@
 package com.harper.carnet.data.api
 
-import com.harper.carnet.data.api.entity.body.DeviceBody
-import com.harper.carnet.data.api.entity.body.NotificationBody
-import com.harper.carnet.data.api.entity.body.PushTokenBody
-import com.harper.carnet.data.api.entity.body.TelematicsBody
+import com.harper.carnet.data.api.entity.body.*
 import com.harper.carnet.data.api.entity.response.ErrorRes
 import com.harper.carnet.data.gson.GSON.gson
 import com.harper.carnet.domain.model.Telematics
 import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.Response
+import java.util.*
 
 /**
  * Created by HarperJr on 11:19
  **/
 interface ApiService {
 
-    fun regDevice(identity: String): Single<String>
+    fun regDevice(identity: String, pushToken: String): Single<String>
 
     fun authDevice(identity: String): Single<String>
 
@@ -31,13 +29,13 @@ interface ApiService {
 
 class ApiExecutor(private val api: Api) : ApiService {
 
-    override fun regDevice(identity: String): Single<String> {
-        return execute { regDevice(DeviceBody(identity)) }
+    override fun regDevice(identity: String, pushToken: String): Single<String> {
+        return execute { regDevice(RegDeviceBody(identity, pushToken)) }
             .map { it.token }
     }
 
     override fun authDevice(identity: String): Single<String> {
-        return execute { authDevice(DeviceBody(identity)) }
+        return execute { authDevice(AuthDeviceBody(identity)) }
             .map { it.token }
     }
 
@@ -52,7 +50,7 @@ class ApiExecutor(private val api: Api) : ApiService {
     }
 
     override fun sendTelematics(lat: Double, lng: Double, speed: Double, rot: Double): Completable {
-        return execute { sendTelematics(TelematicsBody(lat, lng, speed, rot)) }
+        return execute { sendTelematics(TelematicsBody(Date().time, lat, lng, speed, rot)) }
             .ignoreElement()
     }
 
@@ -60,7 +58,7 @@ class ApiExecutor(private val api: Api) : ApiService {
         return execute { getTelematics() }
             .map { telematics ->
                 telematics.map {
-                    Telematics(it.timestamp, it.latitude, it.longitude, it.speed, it.rotation)
+                    Telematics(it.deviceId, it.timestamp, it.latitude, it.longitude, it.speed, it.rotation)
                 }
             }
     }

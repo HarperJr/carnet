@@ -17,6 +17,7 @@ import com.mapbox.services.android.navigation.v5.navigation.*
 import com.mapbox.services.android.navigation.v5.offroute.OffRouteListener
 import com.mapbox.services.android.navigation.v5.routeprogress.ProgressChangeListener
 import com.mapbox.services.android.navigation.v5.routeprogress.RouteProgress
+import org.slf4j.Marker
 import timber.log.Timber
 
 
@@ -107,6 +108,10 @@ class NavigationMapDelegate(contextProvider: () -> Context) : MapDelegate(contex
         navigation?.startNavigation(route)
         resetLocationEngine(route)
         drawRouteOnMap(route)
+    }
+
+    fun drawMarkers(markers: List<Marker>) {
+
     }
 
     private val refreshCallback: RefreshCallback = object : RefreshCallback {

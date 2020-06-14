@@ -33,7 +33,7 @@ object UiModule {
 
             scope<MapFragment> {
                 viewModel {
-                    MapViewModel(get(), get(), get(), get(), get())
+                    MapViewModel(get(), get())
                 }
             }
 

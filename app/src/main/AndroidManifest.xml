@@ -28,5 +28,14 @@
         </activity>
 
         <service android:name=".ui.settings.regions.service.RegionLoadingService" />
+        <service android:name=".ui.map.TelematicsService" />
+
+        <service
+            android:name=".ui.push.PushService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 </manifest>

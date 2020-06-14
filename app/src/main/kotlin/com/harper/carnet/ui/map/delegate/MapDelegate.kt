@@ -137,6 +137,8 @@ open class MapDelegate(private val contextProvider: () -> Context) {
     }
 
     fun setOriginLocation(location: LatLng) {
+        if (!isMapReady) return
+
         currentLocation = location
         locationComponent?.forceLocationUpdate(Location(LocationManager.GPS_PROVIDER).apply {
             longitude = currentLocation.lng

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "857035727203",
+    "firebase_url": "https://carnet-77583.firebaseio.com",
+    "project_id": "carnet-77583",
+    "storage_bucket": "carnet-77583.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:857035727203:android:eb8db8b61de01d491e3356",
+        "android_client_info": {
+          "package_name": "com.harper.carnet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "857035727203-p91estoe9ctipmsegfl7cpq8fb2qubcq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYUw8JJsddEqALX0aKaxmr5twoV1tAmAk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "857035727203-p91estoe9ctipmsegfl7cpq8fb2qubcq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

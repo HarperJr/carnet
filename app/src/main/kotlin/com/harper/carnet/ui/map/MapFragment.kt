@@ -1,5 +1,7 @@
 package com.harper.carnet.ui.map
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.NonNull
@@ -7,7 +9,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.harper.carnet.R
-import com.harper.carnet.data.gson.GSON.gson
 import com.harper.carnet.domain.model.Session
 import com.harper.carnet.domain.model.Telematics
 import com.harper.carnet.ext.cast
@@ -20,7 +21,6 @@ import com.harper.carnet.ui.support.perms.PermissionsDelegate
 import kotlinx.android.synthetic.main.fragment_map.*
 import org.koin.android.scope.currentScope
 import org.koin.android.viewmodel.scope.viewModel
-import timber.log.Timber
 
 
 class MapFragment : Fragment(R.layout.fragment_map) {
@@ -28,26 +28,22 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     private val mapDelegate: NavigationMapDelegate = MapDelegate { requireContext() }.withNavigation()
     private val permissionsDelegate: PermissionsDelegate =
         PermissionsDelegate(this, 4084, Permission.COARSE_LOCATION, Permission.FINE_LOCATION)
+    private val telematicsDisplayManager: TelematicsDisplayManager = TelematicsDisplayManager(mapDelegate)
     private val bottomSheetBehavior by lazy {
         notificationBottomSheet.layoutParams
             .cast<CoordinatorLayout.LayoutParams>().behavior!!.cast<BottomSheetBehavior<*>>()
     }
-    private var isMapActive: Boolean = false
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mapDelegate.onMapReadyListener = { isMapActive = true }
-        mapDelegate.onMapDestroyedListener = { isMapActive = false }
         mapDelegate.onMapMoveListener = {
             mapDelegate.setIsTracking(false)
             btnOrigin.isActivated = false
         }
         with(viewModel) {
             locationsLiveData.observe(this@MapFragment) {
-                if (isMapActive)
-                    mapDelegate.setOriginLocation(it)
+                mapDelegate.setOriginLocation(it)
             }
             telematicsLiveData.observe(this@MapFragment, ::setTelematics)
             activeSessionLiveData.observe(this@MapFragment) {
@@ -78,13 +74,14 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     override fun onStart() {
         super.onStart()
-        viewModel.onStart()
         mapDelegate.onStart()
         permissionsDelegate.requestPermissions()
+        bindTelematicsService()
     }
 
     override fun onStop() {
         mapDelegate.onStop()
+        unbindTelematicsService()
         super.onStop()
     }
 
@@ -114,6 +111,18 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         permissionsDelegate.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+    private fun bindTelematicsService() {
+        requireActivity().bindService(
+            Intent(requireContext(), TelematicsService::class.java),
+            viewModel.getServiceConnection(),
+            Context.BIND_AUTO_CREATE
+        )
+    }
+
+    private fun unbindTelematicsService() {
+        requireActivity().unbindService(viewModel.getServiceConnection())
+    }
+
     private fun onNewNotificationBtnClicked() {
         setNotificationBottomSheetState(BottomSheetBehavior.STATE_EXPANDED)
     }
@@ -123,7 +132,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     }
 
     private fun setTelematics(telematics: List<Telematics>) {
-        Timber.d(gson.toJson(telematics))
+        telematicsDisplayManager.setTelematics(telematics)
     }
 
     private fun prepareMap() {

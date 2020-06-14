@@ -1,9 +1,6 @@
 package com.harper.carnet.data.api
 
-import com.harper.carnet.data.api.entity.body.DeviceBody
-import com.harper.carnet.data.api.entity.body.NotificationBody
-import com.harper.carnet.data.api.entity.body.PushTokenBody
-import com.harper.carnet.data.api.entity.body.TelematicsBody
+import com.harper.carnet.data.api.entity.body.*
 import com.harper.carnet.data.api.entity.response.JwtTokenRes
 import com.harper.carnet.data.api.entity.response.TelematicsRes
 import io.reactivex.Single
@@ -18,10 +15,10 @@ import retrofit2.http.POST
 interface Api {
 
     @POST("reg_device")
-    fun regDevice(@Body deviceBody: DeviceBody): Single<Response<JwtTokenRes>>
+    fun regDevice(@Body authDeviceBody: RegDeviceBody): Single<Response<JwtTokenRes>>
 
     @POST("auth_device")
-    fun authDevice(@Body deviceBody: DeviceBody): Single<Response<JwtTokenRes>>
+    fun authDevice(@Body authDeviceBody: AuthDeviceBody): Single<Response<JwtTokenRes>>
 
     @POST("publish_notification")
     fun publishNotification(@Body notificationBody: NotificationBody): Single<Response<Unit>>
