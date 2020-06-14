@@ -1,6 +1,6 @@
 package com.harper.carnet.ui.support
 
-import com.harper.carnet.domain.model.Value
+import com.harper.carnet.domain.model.DiagnosticValue
 import com.harper.carnet.domain.model.ValueType
 import java.text.DecimalFormat
 
@@ -20,8 +20,8 @@ object ValueFormatter {
         ValueType.TIME_RUN to FORMAT_HOURS
     )
 
-    fun format(value: Value<*>): String {
-        val unformattedValue = value.value
-        return VALUE_FORMAT[value.type]?.format(unformattedValue) ?: unformattedValue.toString()
+    fun format(diagnosticValue: DiagnosticValue<*>): String {
+        val unformattedValue = diagnosticValue.value
+        return VALUE_FORMAT[diagnosticValue.type]?.format(unformattedValue) ?: unformattedValue.toString()
     }
 }

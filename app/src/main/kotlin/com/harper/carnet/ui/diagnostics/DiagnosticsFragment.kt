@@ -8,7 +8,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.harper.carnet.R
-import com.harper.carnet.domain.model.Value
+import com.harper.carnet.domain.model.DiagnosticValue
 import com.harper.carnet.domain.model.ValueType
 import com.harper.carnet.domain.model.Warning
 import com.harper.carnet.ext.observe
@@ -36,7 +36,7 @@ class DiagnosticsFragment : Fragment(R.layout.fragment_diagnostics) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         with(viewModel) {
-            valuesLiveData.observe(this@DiagnosticsFragment, ::setValues)
+            diagnosticsLiveData.observe(this@DiagnosticsFragment, ::setValues)
             warningMessageLiveData.observe(this@DiagnosticsFragment, ::setWarnings)
             connectionLiveData.observe(this@DiagnosticsFragment, ::setIsConnected)
         }
@@ -80,12 +80,12 @@ class DiagnosticsFragment : Fragment(R.layout.fragment_diagnostics) {
             .navigate(R.id.settingsNavigation, SettingsFragment.argConnectionSettingsCase())
     }
 
-    private fun setValues(values: List<Value<*>>) {
+    private fun setValues(diagnosticValues: List<DiagnosticValue<*>>) {
         if (view != null) {
-            for (value in values) {
-                val viewId = resolveValueId(value)
+            for ((valueType, viewId) in VALUE_IDS) {
+                val value = diagnosticValues.find { it.type == valueType }
                 if (viewId != -1)
-                    view!!.findViewById<TextView>(viewId).text = ValueFormatter.format(value)
+                    view!!.findViewById<TextView>(viewId).text = value?.let { ValueFormatter.format(it) } ?: "-"
             }
         }
     }
@@ -99,8 +99,8 @@ class DiagnosticsFragment : Fragment(R.layout.fragment_diagnostics) {
         adapter.setItems(items)
     }
 
-    private fun resolveValueId(value: Value<*>): Int {
-        return VALUE_IDS[value.type] ?: -1
+    private fun resolveValueId(diagnosticValue: DiagnosticValue<*>): Int {
+        return VALUE_IDS[diagnosticValue.type] ?: -1
     }
 
     private fun onTimeElapsed(date: Date) {

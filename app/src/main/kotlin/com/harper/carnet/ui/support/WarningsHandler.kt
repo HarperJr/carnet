@@ -2,7 +2,7 @@ package com.harper.carnet.ui.support
 
 import android.content.Context
 import com.harper.carnet.R
-import com.harper.carnet.domain.model.Value
+import com.harper.carnet.domain.model.DiagnosticValue
 import com.harper.carnet.domain.model.WarningType
 
 object WarningsHandler {
@@ -17,8 +17,8 @@ object WarningsHandler {
         return VALUES_ICONS[type] ?: throw IllegalArgumentException("Unable to resolve icon for type=$type")
     }
 
-    fun resolveText(context: Context, type: WarningType, value: Value<*>): String {
-        val formattedValue = ValueFormatter.format(value)
+    fun resolveText(context: Context, type: WarningType, diagnosticValue: DiagnosticValue<*>): String {
+        val formattedValue = ValueFormatter.format(diagnosticValue)
         return when (type) {
             WarningType.LOW_FUEL -> context.getString(R.string.warn_low_fuel, formattedValue)
             WarningType.HEAT_ENGINE -> context.getString(R.string.warn_heat_engine, formattedValue)

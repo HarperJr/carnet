@@ -10,7 +10,7 @@ class Session(
     val isActive: Boolean,
     val startLocation: Location,
     val endLocation: Location,
-    val values: List<Value<*>> = emptyList(),
+    val diagnosticValues: List<DiagnosticValue<*>> = emptyList(),
     val notifications: List<Notification> = emptyList()
 ) {
 
@@ -37,7 +37,7 @@ class Session(
         result = 31 * result + endTime.hashCode()
         result = 31 * result + startLocation.hashCode()
         result = 31 * result + endLocation.hashCode()
-        result = 31 * result + values.hashCode()
+        result = 31 * result + diagnosticValues.hashCode()
         result = 31 * result + notifications.hashCode()
         return result
     }

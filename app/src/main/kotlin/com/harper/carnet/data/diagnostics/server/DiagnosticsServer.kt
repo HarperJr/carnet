@@ -9,6 +9,7 @@ import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
 import io.reactivex.schedulers.Schedulers
+import okhttp3.internal.waitMillis
 import timber.log.Timber
 import java.net.ServerSocket
 import java.util.concurrent.atomic.AtomicReference
@@ -51,11 +52,14 @@ class DiagnosticsServer(private val assetsManager: AssetsManager) {
                         outer@ while (true) {
                             when (connection.readUTF8String()) {
                                 Commands.BEGIN_READING -> {
-                                    val diagnosticsLine = runCatching { reader.readLine() }.getOrNull()
-                                    while (diagnosticsLine != null && diagnosticsLine.isNotEmpty()) {
-                                        if (diagnosticsLine == "begin")
-                                            continue
+                                    while (true) {
+                                        val diagnosticsLine = runCatching { reader.readLine() }.getOrNull()
+
+                                        if (diagnosticsLine == "begin") continue
+                                        if (diagnosticsLine == null || diagnosticsLine.isEmpty()) break
+
                                         connection.writeUTF8String(diagnosticsLine)
+                                        Thread.sleep(DIAGNOSTICS_COOLDOWN)
                                     }
                                     break@outer
                                 }
@@ -69,5 +73,9 @@ class DiagnosticsServer(private val assetsManager: AssetsManager) {
             }.subscribe({
                 Timber.d("Diagnostics is read")
             }, { Timber.e(it) })
+    }
+
+    companion object {
+        private const val DIAGNOSTICS_COOLDOWN = 3000L
     }
 }

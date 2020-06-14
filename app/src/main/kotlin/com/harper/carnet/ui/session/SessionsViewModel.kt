@@ -22,9 +22,9 @@ class SessionsViewModel(private val sessionProvider: SessionProvider) : ViewMode
                     Location(LatLng(56.135515, 40.357844), "Pr. Stroiteley d 12"),
                     Location(LatLng(56.140486, 40.395699), "Ul. Gorkogo d 42/1"),
                     listOf(
-                        Value(ValueType.VOLTAGE, 12.2),
-                        Value(ValueType.FUEL_LEVEL, 0.25),
-                        Value(ValueType.SPEED, 72)
+                        DiagnosticValue(ValueType.VOLTAGE, 12.2),
+                        DiagnosticValue(ValueType.FUEL_LEVEL, 0.25),
+                        DiagnosticValue(ValueType.SPEED, 72)
                     ),
                     emptyList()
                 ),
@@ -36,9 +36,9 @@ class SessionsViewModel(private val sessionProvider: SessionProvider) : ViewMode
                     Location(LatLng(56.130007, 40.405131), "Oktyabrskiy rayon"),
                     Location(LatLng(56.119522, 40.363095), "Pr. Lenina d. 30-32"),
                     listOf(
-                        Value(ValueType.VOLTAGE, 11.2),
-                        Value(ValueType.FUEL_LEVEL, 0.12),
-                        Value(ValueType.SPEED, 44)
+                        DiagnosticValue(ValueType.VOLTAGE, 11.2),
+                        DiagnosticValue(ValueType.FUEL_LEVEL, 0.12),
+                        DiagnosticValue(ValueType.SPEED, 44)
                     ),
                     emptyList()
                 )

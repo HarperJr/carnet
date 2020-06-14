@@ -1,7 +1,6 @@
 package com.harper.carnet.di
 
 import com.harper.carnet.ui.MainActivity
-import com.harper.carnet.ui.MainViewModel
 import com.harper.carnet.ui.diagnostics.DiagnosticsFragment
 import com.harper.carnet.ui.diagnostics.DiagnosticsViewModel
 import com.harper.carnet.ui.map.MapFragment
@@ -26,12 +25,6 @@ object UiModule {
 
     operator fun invoke(): Module {
         return module {
-            scope<MainActivity> {
-                viewModel {
-                    MainViewModel(get(), get())
-                }
-            }
-
             scope<DiagnosticsFragment> {
                 viewModel {
                     DiagnosticsViewModel(get(), get(), get())

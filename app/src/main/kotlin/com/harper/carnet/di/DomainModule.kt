@@ -21,7 +21,7 @@ object DomainModule {
             }
 
             factory {
-                ValuesProvider()
+                ValuesProvider(get())
             }
 
             factory {

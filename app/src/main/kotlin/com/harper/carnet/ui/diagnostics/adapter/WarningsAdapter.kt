@@ -38,7 +38,7 @@ class WarningsAdapter(private val contextProvider: () -> Context) : RecyclerView
 
         fun bind(item: Warning) {
             warningIcon.setImageResource(WarningsHandler.resolveIcon(item.type))
-            warningText.text = WarningsHandler.resolveText(context, item.type, item.value)
+            warningText.text = WarningsHandler.resolveText(context, item.type, item.diagnosticValue)
             warningTime.text = TimeFormatter.format(context, item.time)
         }
     }

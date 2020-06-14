@@ -2,4 +2,4 @@ package com.harper.carnet.domain.model
 
 import java.util.*
 
-class Warning(val type: WarningType, val value: Value<*>, val time: Date)
+class Warning(val type: WarningType, val diagnosticValue: DiagnosticValue<*>, val time: Date)

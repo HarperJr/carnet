@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.harper.carnet.R
 import com.harper.carnet.domain.model.Session
-import com.harper.carnet.domain.model.Value
+import com.harper.carnet.domain.model.DiagnosticValue
 import com.harper.carnet.domain.model.ValueType
 import com.harper.carnet.ext.cast
 import com.harper.carnet.ui.map.delegate.MapDelegate
@@ -46,7 +46,7 @@ class SessionsAdapter(private val contextProvider: () -> Context) :
 
         fun bind(item: Session) {
             bindMap(item)
-            bindValues(item.values)
+            bindValues(item.diagnosticValues)
 
             origin.text = context.getString(
                 R.string.session_history_location,
@@ -94,16 +94,16 @@ class SessionsAdapter(private val contextProvider: () -> Context) :
                 .start({ imageView.setImageBitmap(it.bitmap) }, { Timber.e(it) })
         }
 
-        private fun bindValues(values: List<Value<*>>) {
-            for (value in values) {
+        private fun bindValues(diagnosticValues: List<DiagnosticValue<*>>) {
+            for (value in diagnosticValues) {
                 val viewId = resolveValueId(value)
                 if (viewId != -1)
                     itemView.findViewById<TextView>(viewId).text = ValueFormatter.format(value)
             }
         }
 
-        private fun resolveValueId(value: Value<*>): Int {
-            return VALUE_IDS[value.type] ?: -1
+        private fun resolveValueId(diagnosticValue: DiagnosticValue<*>): Int {
+            return VALUE_IDS[diagnosticValue.type] ?: -1
         }
     }
 

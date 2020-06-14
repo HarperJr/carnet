@@ -8,11 +8,8 @@ import com.harper.carnet.R
 import com.harper.carnet.data.storage.AppStorage
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
-import org.koin.android.scope.currentScope
-import org.koin.android.viewmodel.scope.viewModel
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
-    private val viewModel: MainViewModel by currentScope.viewModel(this)
     private val appStorage: AppStorage by inject()
     private val navController: NavController by lazy {
         findNavController(R.id.navHostFragment)
@@ -24,16 +21,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         if (appStorage.isIntroScreenShown()) {
             navController.navigate(R.id.mainFragment)
         } else navController.navigate(R.id.introFragment)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        viewModel.onStart()
-    }
-
-    override fun onStop() {
-        viewModel.onStop()
-        super.onStop()
     }
 
     override fun onBackPressed() {

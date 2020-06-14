@@ -11,11 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.harper.carnet.R
 import com.harper.carnet.domain.model.Session
-import com.harper.carnet.domain.model.Value
+import com.harper.carnet.domain.model.DiagnosticValue
 import com.harper.carnet.domain.model.ValueType
 import com.harper.carnet.ext.cast
 import com.harper.carnet.ext.observe
-import com.harper.carnet.ui.map.MapFragment
 import com.harper.carnet.ui.map.delegate.MapDelegate
 import com.harper.carnet.ui.session.adapter.TabPagerAdapter
 import com.harper.carnet.ui.support.ValueFormatter
@@ -71,16 +70,16 @@ class SessionsFragment : Fragment(R.layout.fragment_sessions) {
         } else {
             changeLayoutState(LayoutState.ACTIVE_SESSION)
             bindMap(session)
-            bindValues(session.values)
+            bindValues(session.diagnosticValues)
 
             valueWarnings.text = session.notifications.count().toString()
             valueRotates.text = "0"
         }
     }
 
-    private fun bindValues(values: List<Value<*>>) {
+    private fun bindValues(diagnosticValues: List<DiagnosticValue<*>>) {
         if (view != null) {
-            for (value in values) {
+            for (value in diagnosticValues) {
                 val viewId = resolveValueId(value)
                 if (viewId != -1)
                     view!!.findViewById<TextView>(viewId).text = ValueFormatter.format(value)
@@ -88,8 +87,8 @@ class SessionsFragment : Fragment(R.layout.fragment_sessions) {
         }
     }
 
-    private fun resolveValueId(value: Value<*>): Int {
-        return VALUE_IDS[value.type] ?: -1
+    private fun resolveValueId(diagnosticValue: DiagnosticValue<*>): Int {
+        return VALUE_IDS[diagnosticValue.type] ?: -1
     }
 
     private fun bindMap(session: Session) {
