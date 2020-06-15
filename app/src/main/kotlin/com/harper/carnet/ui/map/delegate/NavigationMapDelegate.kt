@@ -17,7 +17,6 @@ import com.mapbox.services.android.navigation.v5.navigation.*
 import com.mapbox.services.android.navigation.v5.offroute.OffRouteListener
 import com.mapbox.services.android.navigation.v5.routeprogress.ProgressChangeListener
 import com.mapbox.services.android.navigation.v5.routeprogress.RouteProgress
-import org.slf4j.Marker
 import timber.log.Timber
 
 
@@ -32,6 +31,9 @@ class NavigationMapDelegate(contextProvider: () -> Context) : MapDelegate(contex
 
     private val routeRefresh: RouteRefresh = RouteRefresh(BuildConfig.MAPBOX_TOKEN)
     private var wasInTunnel: Boolean = false
+
+    var isNavigating: Boolean = false
+        private set
 
     override fun onMapReady(mapView: MapView, map: MapboxMap) {
         super.onMapReady(mapView, map)
@@ -62,10 +64,11 @@ class NavigationMapDelegate(contextProvider: () -> Context) : MapDelegate(contex
             navigation?.addOffRouteListener(this)
             navigation?.addProgressChangeListener(this)
         }
+        isNavigating = true
     }
 
     override fun userOffRoute(location: Location?) {
-
+        isNavigating = false
     }
 
     override fun onProgressChange(location: Location, routeProgress: RouteProgress) {
@@ -78,6 +81,7 @@ class NavigationMapDelegate(contextProvider: () -> Context) : MapDelegate(contex
 
         if (isTracking)
             routeRefresh.refresh(routeProgress, refreshCallback)
+        setOriginLocation(LatLng(location.latitude, location.longitude))
     }
 
     fun createRoute(origin: LatLng, dest: LatLng) {
@@ -108,10 +112,6 @@ class NavigationMapDelegate(contextProvider: () -> Context) : MapDelegate(contex
         navigation?.startNavigation(route)
         resetLocationEngine(route)
         drawRouteOnMap(route)
-    }
-
-    fun drawMarkers(markers: List<Marker>) {
-
     }
 
     private val refreshCallback: RefreshCallback = object : RefreshCallback {

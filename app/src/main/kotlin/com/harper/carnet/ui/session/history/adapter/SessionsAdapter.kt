@@ -13,9 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.harper.carnet.R
 import com.harper.carnet.domain.model.Session
 import com.harper.carnet.domain.model.DiagnosticValue
+import com.harper.carnet.domain.model.LatLng
 import com.harper.carnet.domain.model.ValueType
 import com.harper.carnet.ext.cast
 import com.harper.carnet.ui.map.delegate.MapDelegate
+import com.harper.carnet.ui.session.NavigationMapSnapshotter
 import com.harper.carnet.ui.support.ValueFormatter
 import com.mapbox.mapboxsdk.geometry.LatLngBounds
 import com.mapbox.mapboxsdk.maps.Style
@@ -74,7 +76,7 @@ class SessionsAdapter(private val contextProvider: () -> Context) :
             val lonWest = if (start.lng < end.lng) start.lng else end.lng
 
             mapView.doOnPreDraw { imageView ->
-                loadMapRegionIntoView(imageView.cast(), latNorth, latSouth, lonEast, lonWest)
+                loadMapRegionIntoView(imageView.cast(), latNorth, latSouth, lonEast, lonWest, item.routePath)
             }
         }
 
@@ -83,15 +85,10 @@ class SessionsAdapter(private val contextProvider: () -> Context) :
             latNorth: Double,
             latSouth: Double,
             lonEast: Double,
-            lonWest: Double
+            lonWest: Double,
+            path: List<LatLng>
         ) {
-            val options = MapSnapshotter.Options(imageView.width, imageView.height)
-                .withRegion(LatLngBounds.from(latNorth, lonEast, latSouth, lonWest))
-                .withStyleBuilder(Style.Builder().fromUri(MapDelegate.MAP_BOX_STYLE_CUSTOM))
-                .withLogo(false)
-
-            MapSnapshotter(context, options)
-                .start({ imageView.setImageBitmap(it.bitmap) }, { Timber.e(it) })
+            NavigationMapSnapshotter.snapIntoImageView(imageView, LatLngBounds.from(latNorth, lonEast, latSouth, lonWest), path)
         }
 
         private fun bindValues(diagnosticValues: List<DiagnosticValue<*>>) {

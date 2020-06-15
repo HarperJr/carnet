@@ -10,12 +10,15 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.harper.carnet.R
-import com.harper.carnet.domain.model.Session
 import com.harper.carnet.domain.model.DiagnosticValue
+import com.harper.carnet.domain.model.LatLng
+import com.harper.carnet.domain.model.Session
 import com.harper.carnet.domain.model.ValueType
 import com.harper.carnet.ext.cast
 import com.harper.carnet.ext.observe
 import com.harper.carnet.ui.map.delegate.MapDelegate
+import com.harper.carnet.ui.map.delegate.MapDrawManager
+import com.harper.carnet.ui.map.delegate.NavigationMapDelegate
 import com.harper.carnet.ui.session.adapter.TabPagerAdapter
 import com.harper.carnet.ui.support.ValueFormatter
 import com.harper.carnet.ui.support.perms.Permission
@@ -30,6 +33,7 @@ import org.koin.android.viewmodel.scope.viewModel
 
 class SessionsFragment : Fragment(R.layout.fragment_sessions) {
     private val viewModel: SessionsViewModel by currentScope.viewModel(this)
+    private val mapDelegate: NavigationMapDelegate = MapDelegate { requireContext() }.withNavigation()
     private val permissionsDelegate: PermissionsDelegate =
         PermissionsDelegate(this, 2048, Permission.COARSE_LOCATION, Permission.FINE_LOCATION)
 
@@ -38,7 +42,10 @@ class SessionsFragment : Fragment(R.layout.fragment_sessions) {
 
         with(viewModel) {
             activeSessionLiveData.observe(this@SessionsFragment, ::setActiveSession)
+            activeSessionDiagnosticsProvider.observe(this@SessionsFragment, ::setDiagnosticValues)
         }
+
+        mapDelegate.disableZoomBounds()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,6 +53,9 @@ class SessionsFragment : Fragment(R.layout.fragment_sessions) {
             it.adapter = TabPagerAdapter(requireContext(), childFragmentManager)
         })
         btnCreateSession.setOnClickListener { onCreateSessionBtnClicked() }
+        mapView.getMapAsync {
+            mapDelegate.onMapReady(mapView, it)
+        }
     }
 
     private fun onCreateSessionBtnClicked() {
@@ -53,9 +63,40 @@ class SessionsFragment : Fragment(R.layout.fragment_sessions) {
             .navigate(R.id.sessionCreateFragment)
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        mapDelegate.onSaveInstanceState(outState)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mapDelegate.onStart()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mapDelegate.onResume()
+    }
+
+    override fun onPause() {
+        mapDelegate.onPause()
+        super.onPause()
+    }
+
+    override fun onStop() {
+        mapDelegate.onStop()
+        super.onStop()
+    }
+
+    override fun onLowMemory() {
+        mapDelegate.onLowMemory()
+        super.onLowMemory()
+    }
+
     override fun onDestroyView() {
         permissionsDelegate.onPermissionsListener = null
         tabLayout.clearOnTabSelectedListeners()
+        mapDelegate.onDestroy()
         super.onDestroyView()
     }
 
@@ -69,56 +110,24 @@ class SessionsFragment : Fragment(R.layout.fragment_sessions) {
             changeLayoutState(LayoutState.CREATE_SESSION)
         } else {
             changeLayoutState(LayoutState.ACTIVE_SESSION)
-            bindMap(session)
-            bindValues(session.diagnosticValues)
+
+            mapDelegate.createRoute(session.startLocation.latLng, session.endLocation.latLng)
+            mapDelegate.setFocusInBounds(session.startLocation.latLng, session.endLocation.latLng)
 
             valueWarnings.text = session.notifications.count().toString()
             valueRotates.text = "0"
         }
     }
 
-    private fun bindValues(diagnosticValues: List<DiagnosticValue<*>>) {
+    private fun setDiagnosticValues(diagnosticValues: List<DiagnosticValue<*>>) {
         if (view != null) {
-            for (value in diagnosticValues) {
-                val viewId = resolveValueId(value)
+            for ((valueType, viewId) in VALUE_IDS) {
+                val value = diagnosticValues.find { it.type == valueType }
                 if (viewId != -1)
-                    view!!.findViewById<TextView>(viewId).text = ValueFormatter.format(value)
+                    requireView().findViewById<TextView>(viewId).text =
+                        value?.let { ValueFormatter.format(it) } ?: getString(R.string.diagnostics_stub)
             }
         }
-    }
-
-    private fun resolveValueId(diagnosticValue: DiagnosticValue<*>): Int {
-        return VALUE_IDS[diagnosticValue.type] ?: -1
-    }
-
-    private fun bindMap(session: Session) {
-        val start = session.startLocation.latLng
-        val end = session.endLocation.latLng
-
-        val latNorth = if (start.lat > end.lat) start.lat else end.lat
-        val latSouth = if (start.lat < end.lat) start.lat else end.lat
-        val lonEast = if (start.lng > end.lng) start.lng else end.lng
-        val lonWest = if (start.lng < end.lng) start.lng else end.lng
-
-        mapView.doOnPreDraw { imageView ->
-            loadMapRegionIntoView(imageView.cast(), latNorth, latSouth, lonEast, lonWest)
-        }
-    }
-
-    private fun loadMapRegionIntoView(
-        imageView: ImageView,
-        latNorth: Double,
-        latSouth: Double,
-        lonEast: Double,
-        lonWest: Double
-    ) {
-        val options = MapSnapshotter.Options(imageView.width, imageView.height)
-            .withRegion(LatLngBounds.from(latNorth, lonEast, latSouth, lonWest))
-            .withStyleBuilder(Style.Builder().fromUri(MapDelegate.MAP_BOX_STYLE_CUSTOM))
-            .withLogo(false)
-
-        MapSnapshotter(requireContext(), options)
-            .start { imageView.setImageBitmap(it.bitmap) }
     }
 
     private fun changeLayoutState(layoutState: LayoutState) {

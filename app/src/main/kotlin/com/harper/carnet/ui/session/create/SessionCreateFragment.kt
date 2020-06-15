@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.harper.carnet.R
 import com.harper.carnet.domain.model.Place
 import com.harper.carnet.ext.observe
@@ -41,6 +42,7 @@ class SessionCreateFragment : Fragment(R.layout.fragment_session_create) {
             searchHintsLiveData.observe(this@SessionCreateFragment, ::setSearchHints)
             selectedPlaceLiveData.observe(this@SessionCreateFragment, ::applySearchResult)
             sessionCreatedLiveData.observe(this@SessionCreateFragment, ::onSessionCreation)
+            errorLiveData.observe(this@SessionCreateFragment) { showError() }
             currentLocationLiveData.observe(this@SessionCreateFragment) {
                 if (mapDelegate.isMapReady)
                     mapDelegate.setOriginLocation(it)
@@ -103,13 +105,15 @@ class SessionCreateFragment : Fragment(R.layout.fragment_session_create) {
         super.onDestroyView()
     }
 
+    private fun showError() {
+        Snackbar.make(mapView, R.string.create_session_error, Snackbar.LENGTH_SHORT).show()
+    }
+
     private fun onSessionCreation(isCreated: Boolean) {
         if (isCreated) {
             Navigation.findNavController(requireActivity(), R.id.nestedNavHostFragment)
                 .popBackStack()
-        } else {
-            //TODO Show message here
-        }
+        } else showError()
     }
 
     private fun onSearchHintClicked(place: Place) {

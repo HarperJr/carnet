@@ -12,6 +12,9 @@ import com.harper.carnet.data.database.entity.SessionEntity
 @Dao
 interface SessionsDao : BaseDao<SessionEntity> {
 
-    @Query("SELECT * FROM Sessions WHERE isActive = 1")
+    @Query("SELECT * FROM Sessions WHERE isActive = 1 LIMIT 1")
     fun findActiveSession(): SessionEntity?
+
+    @Query("SELECT * FROM Sessions WHERE isActive = 0")
+    fun fundNonActiveSessions(): List<SessionEntity>
 }

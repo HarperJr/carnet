@@ -85,7 +85,8 @@ class DiagnosticsFragment : Fragment(R.layout.fragment_diagnostics) {
             for ((valueType, viewId) in VALUE_IDS) {
                 val value = diagnosticValues.find { it.type == valueType }
                 if (viewId != -1)
-                    view!!.findViewById<TextView>(viewId).text = value?.let { ValueFormatter.format(it) } ?: "-"
+                    requireView().findViewById<TextView>(viewId).text =
+                        value?.let { ValueFormatter.format(it) } ?: getString(R.string.diagnostics_stub)
             }
         }
     }

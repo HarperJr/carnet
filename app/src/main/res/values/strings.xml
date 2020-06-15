@@ -95,5 +95,6 @@
     <string name="telematics_text">Aggregating data</string>
     <string name="telematics_title">Telematics</string>
     <string name="diagnostics_stub">-</string>
+    <string name="create_session_error">Error occured, pelase retry</string>
 
 </resources>

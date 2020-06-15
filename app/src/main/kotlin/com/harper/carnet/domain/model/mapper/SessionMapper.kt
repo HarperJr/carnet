@@ -12,16 +12,14 @@ import com.harper.carnet.domain.model.Session
 class SessionMapper : BaseMapper<SessionEntity, Session>() {
 
     override fun entityToModel(entity: SessionEntity): Session {
-        val endLocation = Location(LatLngMapper.entityToModel(entity.endLocation), entity.endLocationName)
-        val startLocation = Location(LatLngMapper.entityToModel(entity.startLocation), entity.startLocationName)
-
         return Session(
             entity.id,
             entity.startTime,
             entity.endTime,
             entity.isActive,
-            startLocation,
-            endLocation,
+            Location(LatLngMapper.entityToModel(entity.startLocation), entity.startLocationName),
+            Location(LatLngMapper.entityToModel(entity.endLocation), entity.endLocationName),
+            LatLngMapper.entitiesToModels(entity.routePath),
             emptyList(),
             emptyList()
         )
@@ -36,7 +34,7 @@ class SessionMapper : BaseMapper<SessionEntity, Session>() {
             LatLngMapper.modelToEntity(model.endLocation.latLng),
             model.startLocation.name,
             model.endLocation.name,
-            emptyList()
+            LatLngMapper.modelsToEntities(model.routePath)
         )
     }
 

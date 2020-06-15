@@ -9,6 +9,7 @@ import com.harper.carnet.domain.map.place.PlaceProvider
 import com.harper.carnet.domain.model.LatLng
 import com.harper.carnet.domain.model.Place
 import com.harper.carnet.domain.session.SessionManager
+import com.harper.carnet.ext.SingleLiveData
 import com.harper.carnet.ext.rxLiveData
 import com.mapbox.geojson.BoundingBox
 import io.reactivex.Observable
@@ -31,6 +32,7 @@ class SessionCreateViewModel(
     val selectedPlaceLiveData: MutableLiveData<Place> = MutableLiveData()
     val currentLocationLiveData: MutableLiveData<LatLng> = MutableLiveData()
     val sessionCreatedLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val errorLiveData: SingleLiveData<Unit> = SingleLiveData()
 
     private val searchHintsSubject = PublishSubject.create<String>()
 
@@ -111,11 +113,13 @@ class SessionCreateViewModel(
     }
 
     fun onCreateBtnClicked() {
-        // TODO БЛЯТЬ ЭТО ЖЕ ПИЗДЕЦ!!!
-        if (currentPlace == null) return
-        val place = selectedPlaceLiveData.value ?: return
+        val selectedPlace = selectedPlaceLiveData.value
+        if (currentPlace == null || selectedPlace == null) {
+            errorLiveData.value = Unit
+            return
+        }
 
-        createSessionDisposable = sessionManager.createSession(currentPlace!!, place)
+        createSessionDisposable = sessionManager.createSession(currentPlace!!, selectedPlace)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ isCreated ->

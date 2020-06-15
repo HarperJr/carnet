@@ -10,6 +10,7 @@ class Session(
     val isActive: Boolean,
     val startLocation: Location,
     val endLocation: Location,
+    val routePath: List<LatLng> = emptyList(),
     val diagnosticValues: List<DiagnosticValue<*>> = emptyList(),
     val notifications: List<Notification> = emptyList()
 ) {
@@ -21,9 +22,7 @@ class Session(
             Date(),
             false,
             Location(LatLng(0.0, 0.0), ""),
-            Location(LatLng(0.0, 0.0), ""),
-            emptyList(),
-            emptyList()
+            Location(LatLng(0.0, 0.0), "")
         )
     }
 
@@ -39,6 +38,7 @@ class Session(
         result = 31 * result + endLocation.hashCode()
         result = 31 * result + diagnosticValues.hashCode()
         result = 31 * result + notifications.hashCode()
+        result = 31 * result + routePath.hashCode()
         return result
     }
 }

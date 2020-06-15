@@ -10,4 +10,8 @@ class SessionRepository(protected val sessionsDao: SessionsDao) : BaseRepository
     fun findActiveSession(): Session? {
         return sessionsDao.findActiveSession()?.let { SessionMapper.entityToModel(it) }
     }
+
+    fun findNonActiveSessions(): List<Session> {
+        return SessionMapper.entitiesToModels(sessionsDao.fundNonActiveSessions())
+    }
 }

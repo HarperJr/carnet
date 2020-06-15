@@ -43,7 +43,8 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         }
         with(viewModel) {
             locationsLiveData.observe(this@MapFragment) {
-                mapDelegate.setOriginLocation(it)
+                if (!mapDelegate.isNavigating)
+                    mapDelegate.setOriginLocation(it)
             }
             telematicsLiveData.observe(this@MapFragment, ::setTelematics)
             activeSessionLiveData.observe(this@MapFragment) {
@@ -64,6 +65,10 @@ class MapFragment : Fragment(R.layout.fragment_map) {
             mapDelegate.setIsTracking(true)
             btnOrigin.isActivated = true
         }
+
+        btnOrigin.isActivated = true
+        mapDelegate.setIsTracking(true)
+
         btnNewNotification.setOnClickListener { onNewNotificationBtnClicked() }
     }
 

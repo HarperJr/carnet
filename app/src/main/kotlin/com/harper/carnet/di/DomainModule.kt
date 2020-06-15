@@ -16,6 +16,10 @@ object DomainModule {
 
     operator fun invoke(): Module {
         return module {
+            single {
+                LocationProvider(get())
+            }
+
             factory {
                 WarningsProvider()
             }
@@ -32,9 +36,6 @@ object DomainModule {
                 RegionsProvider()
             }
 
-            factory {
-                LocationProvider(get())
-            }
 
             factory {
                 SessionManager(get())

@@ -44,6 +44,9 @@ open class MapDelegate(private val contextProvider: () -> Context) {
     private var mapView: MapView? = null
     private var symbolManager: SymbolManager? = null
     private var locationComponent: LocationComponent? = null
+    private var isZoomEnabled: Boolean = true
+
+    private val pendingActions: MutableList<(MapboxMap) -> Unit> = mutableListOf()
 
     @SuppressLint("MissingPermission")
     open fun onMapReady(mapView: MapView, map: MapboxMap) {
@@ -66,7 +69,7 @@ open class MapDelegate(private val contextProvider: () -> Context) {
                             .build()
                         activateLocationComponent(options)
                         isLocationComponentEnabled = true
-                        cameraMode = CameraMode.TRACKING;
+                        cameraMode = CameraMode.NONE;
                         renderMode = RenderMode.GPS
                     }
                     with(uiSettings) {
@@ -74,13 +77,19 @@ open class MapDelegate(private val contextProvider: () -> Context) {
                         isAttributionEnabled = false
                         isLogoEnabled = false
                     }
-                    setMinZoomPreference(MIN_ZOOM)
-                    setMaxZoomPreference(MAX_ZOOM)
+
+                    if (isZoomEnabled) {
+                        setMinZoomPreference(MIN_ZOOM)
+                        setMaxZoomPreference(MAX_ZOOM)
+                    }
                 }
                 this@MapDelegate.symbolManager = SymbolManager(mapView, map, style)
                 this@MapDelegate.mapDrawManager = MapDrawManager(context, style)
             }
             this@MapDelegate.locationComponent = map.locationComponent
+
+            pendingActions.forEach { it.invoke(map) }
+            pendingActions.clear()
         }
         onMapReadyListener?.invoke()
         isMapReady = true
@@ -132,25 +141,37 @@ open class MapDelegate(private val contextProvider: () -> Context) {
         isMapReady = false
     }
 
-    fun setIsTracking(isTracking: Boolean) {
+    open fun setIsTracking(isTracking: Boolean) {
         this.isTracking = isTracking
-    }
 
-    fun setOriginLocation(location: LatLng) {
-        if (!isMapReady) return
-
-        currentLocation = location
-        locationComponent?.forceLocationUpdate(Location(LocationManager.GPS_PROVIDER).apply {
-            longitude = currentLocation.lng
-            latitude = currentLocation.lat
-        })
-
-        if (isTracking)
+        if (isMapReady && isTracking)
             map?.animateCamera(
                 CameraUpdateFactory.newLatLng(
                     com.mapbox.mapboxsdk.geometry.LatLng(currentLocation.lat, currentLocation.lng)
                 )
             )
+    }
+
+    open fun setOriginLocation(location: LatLng) {
+        currentLocation = location
+
+        val action = { map: MapboxMap ->
+            locationComponent?.forceLocationUpdate(Location(LocationManager.GPS_PROVIDER).apply {
+                longitude = currentLocation.lng
+                latitude = currentLocation.lat
+            })
+
+            if (isTracking)
+                map.animateCamera(
+                    CameraUpdateFactory.newLatLng(
+                        com.mapbox.mapboxsdk.geometry.LatLng(currentLocation.lat, currentLocation.lng)
+                    )
+                )
+        }
+
+        if (isMapReady) {
+            map?.let(action)
+        } else pendingActions.add(action)
     }
 
     fun setFocusInBounds(start: LatLng, end: LatLng) {
@@ -159,15 +180,27 @@ open class MapDelegate(private val contextProvider: () -> Context) {
         val lonEast = if (start.lng > end.lng) start.lng else end.lng
         val lonWest = if (start.lng < end.lng) start.lng else end.lng
 
-        map?.setLatLngBoundsForCameraTarget(
-            LatLngBounds.from(
-                latNorth, lonEast, latSouth, lonWest
+        val action = { map: MapboxMap ->
+            map.animateCamera(
+                CameraUpdateFactory.newLatLngBounds(
+                    LatLngBounds.from(
+                        latNorth, lonEast, latSouth, lonWest
+                    ), 64
+                )
             )
-        )
+        }
+
+        if (isMapReady) {
+            map?.let(action)
+        } else pendingActions.add(action)
     }
 
     fun withNavigation(): NavigationMapDelegate {
         return NavigationMapDelegate { context }
+    }
+
+    fun disableZoomBounds() {
+        this.isZoomEnabled = false
     }
 
     private val onMoveListener = object : MapboxMap.OnMoveListener {
@@ -177,7 +210,6 @@ open class MapDelegate(private val contextProvider: () -> Context) {
 
         override fun onMove(detector: MoveGestureDetector) {
             onMapMoveListener?.invoke()
-            isTracking = false
         }
 
         override fun onMoveEnd(detector: MoveGestureDetector) {

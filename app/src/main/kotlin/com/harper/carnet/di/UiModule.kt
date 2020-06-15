@@ -39,7 +39,7 @@ object UiModule {
 
             scope<SessionsFragment> {
                 viewModel {
-                    SessionsViewModel(get())
+                    SessionsViewModel(get(), get())
                 }
             }
 

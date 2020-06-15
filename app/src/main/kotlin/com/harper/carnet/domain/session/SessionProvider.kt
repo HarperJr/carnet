@@ -13,4 +13,10 @@ class SessionProvider(private val sessionRepository: SessionRepository) {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
+
+    fun provideSessionHistory(): Observable<List<Session>> {
+        return Observable.fromCallable { sessionRepository.findNonActiveSessions() }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 }
